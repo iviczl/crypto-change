@@ -1,4 +1,3 @@
-import { StrictMode } from "react";
 import Login from "./components/Login";
 import { Link, Route, Routes } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -9,11 +8,15 @@ function App() {
     <>
       <nav>
         <ul className="nav">
-          <li className="navbar navbar-nav">
-            <Link to="/">Home</Link>
+          <li className="nav-item ">
+            <Link to="/" className="nav-link">
+              Home
+            </Link>
           </li>
-          <li className="navbar navbar-nav">
-            <Link to="/login">Login</Link>
+          <li className="nav-item ">
+            <Link to="/login" className="nav-link">
+              Login
+            </Link>
           </li>
         </ul>
       </nav>
