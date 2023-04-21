@@ -6,7 +6,7 @@ import Home from "./components/Home";
 function App() {
   return (
     <>
-      <nav>
+      <nav className="sticky-top">
         <ul className="nav">
           <li className="nav-item ">
             <Link to="/" className="nav-link">
