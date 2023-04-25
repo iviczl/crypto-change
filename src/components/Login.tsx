@@ -1,8 +1,13 @@
 import { useForm } from "react-hook-form";
+import { useAppDispatch } from "../hooks/useTypeSelector";
+import { login as loginAction } from "../userReducer";
 function Login() {
   const { register, handleSubmit, formState } = useForm({ mode: "all" });
   const { errors, isValid } = formState;
-  const login = (values) => {};
+  const dispatch = useAppDispatch();
+  const login = (values: { userName: string; password: string }) => {
+    dispatch(loginAction(values));
+  };
   return (
     <>
       <div className="col-3 mx-auto">
