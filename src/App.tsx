@@ -4,6 +4,11 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Home from "./components/Home";
 
 function App() {
+  const tabs = [
+    { id: "A", tabIndex: 0, active: true, title: "A currency" },
+    { id: "B", tabIndex: 1, active: false, title: "B currency" },
+    { id: "C", tabIndex: 2, active: false, title: "C currency" },
+  ];
   return (
     <>
       <nav className="sticky-top">
@@ -21,7 +26,7 @@ function App() {
         </ul>
       </nav>
       <Routes>
-        <Route path="/" element={<Home />}></Route>
+        <Route path="/" element={<Home tabs={tabs} />}></Route>
         <Route path="/login" element={<Login />}></Route>
       </Routes>
     </>
