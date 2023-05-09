@@ -10,28 +10,29 @@ function ChangeForm(props: IChangeProps) {
   const [targetCurrencyAmount, SetTargetCurrencyAmount] = useState(0);
   return (
     <>
-      <div>currency</div>
-      <article>
-        <p>
-          <label>
-            {props.sourceCurrency.name}
-            <input
-              type="number"
-              onChange={(e) => SetSourceCurrencyAmount(+e.target.value)}
-              value={sourceCurrencyAmount}
-            />
-          </label>
-          <label>&lt;=&gt;</label>
-          <label>
-            {props.targetCurrency.name}
-            <input
-              type="number"
-              onChange={(e) => SetTargetCurrencyAmount(+e.target.value)}
-              value={targetCurrencyAmount}
-            />
-          </label>
-        </p>
-      </article>
+      <div className="mt-4 ms-4">
+        <label>
+          <input
+            className="form-control"
+            style={{ display: "inline", width: "auto" }}
+            type="number"
+            onChange={(e) => SetSourceCurrencyAmount(+e.target.value)}
+            value={sourceCurrencyAmount}
+          />
+          <span className="ms-2">{props.sourceCurrency.code}</span>
+        </label>
+        <label className="mx-4">=</label>
+        <label>
+          <input
+            className="form-control"
+            style={{ display: "inline", width: "auto" }}
+            type="number"
+            onChange={(e) => SetTargetCurrencyAmount(+e.target.value)}
+            value={targetCurrencyAmount}
+          />
+          <span className="ms-2">{props.targetCurrency.code}</span>
+        </label>
+      </div>
     </>
   );
 }

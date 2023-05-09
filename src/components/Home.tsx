@@ -30,18 +30,47 @@ function Home({ tabs }: { tabs: ITab[] }) {
     if (tab.id === "+") {
       return <NewChange />;
     } else {
-      return <ChangeForm sourceCurrency={usd} targetCurrency={tab.currency} />;
+      return (
+        <ChangeForm
+          sourceCurrency={usd}
+          targetCurrency={tab.currency || { name: "", code: "" }}
+        />
+      );
     }
   };
   return (
     <>
       {/* className="modal-dialog modal-dialog-centered" */}
-      <dialog ref={deleteDialog}>
-        <h4>Do you really want to drop this currency?</h4>
-        <form>
+      <dialog
+        ref={deleteDialog}
+        style={{
+          padding: "1rem",
+          border: "1px solid ",
+          borderRadius: ".5rem",
+          borderColor: "light-grey",
+          // display: "flex",
+          // flexDirection: "column",
+          // rowGap: "1rem",
+        }}
+      >
+        <div className="modal-header" style={{ gap: "1rem" }}>
+          <h5 className="modal-title">Delete currency</h5>
           <button
-            type="submit"
-            formMethod="dialog"
+            type="button"
+            className="btn-close"
+            aria-label="Close"
+            onClick={() => deleteDialog.current?.close()}
+          ></button>
+        </div>
+        <div className="modal-body">
+          Do you really want to drop this currency?
+        </div>
+        <div
+          className="modal-footer"
+          style={{ gap: ".5rem", marginTop: "1rem" }}
+        >
+          <button
+            className="btn btn-primary"
             onClick={() => {
               deleteTab(activeTabId);
               deleteDialog.current?.close();
@@ -49,14 +78,13 @@ function Home({ tabs }: { tabs: ITab[] }) {
           >
             Yes
           </button>
-        </form>
-        <button
-          type="submit"
-          formMethod="dialog"
-          onClick={() => deleteDialog.current?.close()}
-        >
-          Cancel
-        </button>
+          <button
+            className="btn btn-primary"
+            onClick={() => deleteDialog.current?.close()}
+          >
+            Cancel
+          </button>
+        </div>
       </dialog>
       <ul className="nav nav-tabs" id="myTab" role="tablist">
         {tabStates.map((tab) => {
@@ -90,7 +118,10 @@ function Home({ tabs }: { tabs: ITab[] }) {
             >
               {tabContent(tab)}
               {tab.id !== "+" ? (
-                <button onClick={() => deleteDialog.current?.showModal()}>
+                <button
+                  className="btn btn-primary mt-4 ms-4"
+                  onClick={() => deleteDialog.current?.showModal()}
+                >
                   Delete Currency
                 </button>
               ) : (
