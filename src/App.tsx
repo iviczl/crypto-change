@@ -2,12 +2,31 @@ import Login from "./components/Login";
 import { Link, Route, Routes } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Home from "./components/Home";
+import ITab from "./types/ITab";
 
 function App() {
-  const tabs = [
-    { id: "A", tabIndex: 0, active: true, title: "A currency" },
-    { id: "B", tabIndex: 1, active: false, title: "B currency" },
-    { id: "C", tabIndex: 2, active: false, title: "C currency" },
+  const tabs: ITab[] = [
+    {
+      id: "A",
+      tabIndex: 0,
+      active: true,
+      title: "A currency",
+      currency: { name: "A curr", code: "A" },
+    },
+    {
+      id: "B",
+      tabIndex: 1,
+      active: false,
+      title: "B currency",
+      currency: { name: "B curr", code: "B" },
+    },
+    {
+      id: "C",
+      tabIndex: 2,
+      active: false,
+      title: "C currency",
+      currency: { name: "C curr", code: "C" },
+    },
   ];
   return (
     <>

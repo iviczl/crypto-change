@@ -1,34 +1,63 @@
-import { useState } from "react";
-import Currency from "./Currency";
-import NewCurrency from "./NewCurrency";
-interface ITab {
-  id: string;
-  tabIndex: number;
-  active: boolean;
-  title: string;
-}
+import { MutableRefObject, useRef, useState } from "react";
+import ChangeForm from "./ChangeForm";
+import NewChange from "./NewChange";
+import type { Currency } from "../types/currency";
+import ITab from "../types/ITab";
 
 function Home({ tabs }: { tabs: ITab[] }) {
+  const [activeTabId, setActiveTabId] = useState("0");
   const setActiveTab = (id: string) => {
     const newState = [...tabStates];
     newState.forEach((v) => {
       v.active = v.id === id;
     });
+    setActiveTabId(id);
     setTabStates(newState);
   };
+  const deleteTab = (id: string) => {
+    const newState = tabStates.filter((s) => s.id !== id);
+    newState[0].active = true;
+    setActiveTabId(newState[0].id);
+    setTabStates(newState);
+  };
+  const usd: Currency = { name: "US Dollar", code: "USD" };
+  const deleteDialog: MutableRefObject<HTMLDialogElement | null> = useRef(null);
   const [tabStates, setTabStates] = useState([
     ...tabs,
-    { id: "+", tabIndex: 0, active: false, title: "+" },
+    { id: "+", tabIndex: 0, active: false, title: "+", currency: undefined },
   ]);
   const tabContent = (tab: ITab) => {
     if (tab.id === "+") {
-      return <NewCurrency />;
+      return <NewChange />;
     } else {
-      return <Currency />;
+      return <ChangeForm sourceCurrency={usd} targetCurrency={tab.currency} />;
     }
   };
   return (
     <>
+      {/* className="modal-dialog modal-dialog-centered" */}
+      <dialog ref={deleteDialog}>
+        <h4>Do you really want to drop this currency?</h4>
+        <form>
+          <button
+            type="submit"
+            formMethod="dialog"
+            onClick={() => {
+              deleteTab(activeTabId);
+              deleteDialog.current?.close();
+            }}
+          >
+            Yes
+          </button>
+        </form>
+        <button
+          type="submit"
+          formMethod="dialog"
+          onClick={() => deleteDialog.current?.close()}
+        >
+          Cancel
+        </button>
+      </dialog>
       <ul className="nav nav-tabs" id="myTab" role="tablist">
         {tabStates.map((tab) => {
           return (
@@ -60,6 +89,13 @@ function Home({ tabs }: { tabs: ITab[] }) {
               key={tab.id}
             >
               {tabContent(tab)}
+              {tab.id !== "+" ? (
+                <button onClick={() => deleteDialog.current?.showModal()}>
+                  Delete Currency
+                </button>
+              ) : (
+                ""
+              )}
             </div>
           );
         })}
