@@ -1,6 +1,6 @@
 import { MutableRefObject, useRef, useState } from "react";
-import ChangeForm from "./ChangeForm";
-import NewChange from "./NewChange";
+import ChangeForm from "../components/ChangeForm";
+import NewChange from "../components/NewChange";
 import type { Currency } from "../types/currency";
 import ITab from "../types/ITab";
 

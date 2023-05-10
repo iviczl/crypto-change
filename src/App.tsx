@@ -1,7 +1,7 @@
-import Login from "./components/Login";
+import Login from "./pages/Login";
 import { Link, Route, Routes } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Home from "./components/Home";
+import Home from "./pages/Home";
 import ITab from "./types/ITab";
 
 function App() {
