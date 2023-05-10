@@ -5,7 +5,7 @@ import type { Currency } from "../types/currency";
 import ITab from "../types/ITab";
 
 function Home({ tabs }: { tabs: ITab[] }) {
-  const [activeTabId, setActiveTabId] = useState("0");
+  const [activeTabId, setActiveTabId] = useState(tabs[0].id);
   const setActiveTab = (id: string) => {
     const newState = [...tabStates];
     newState.forEach((v) => {
@@ -34,6 +34,7 @@ function Home({ tabs }: { tabs: ITab[] }) {
         <ChangeForm
           sourceCurrency={usd}
           targetCurrency={tab.currency || { name: "", code: "" }}
+          rate={11}
         />
       );
     }
@@ -105,14 +106,15 @@ function Home({ tabs }: { tabs: ITab[] }) {
           );
         })}
       </ul>
-      <div className="tab-content" id="myTabContent">
+      <div className="tab-content h-100" id="myTabContent">
         {tabStates.map((tab) => {
           return (
             <div
-              className={"tab-pane fade " + (tab.active ? " show active" : "")}
+              className={
+                "tab-pane fade h-100" + (tab.active ? " show active" : "")
+              }
               id="home-tab-pane"
               role="tabpanel"
-              aria-labelledby="home-tab"
               tabIndex={tab.tabIndex}
               key={tab.id}
             >
