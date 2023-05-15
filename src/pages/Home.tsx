@@ -1,11 +1,55 @@
-import { MutableRefObject, useRef, useState } from "react";
+import { MutableRefObject, useEffect, useRef, useState } from "react";
 import ChangeForm from "../components/ChangeForm";
 import NewChange from "../components/NewChange";
 import type { Currency } from "../types/currency";
 import ITab from "../types/ITab";
+import store from "../store";
 
-function Home({ tabs }: { tabs: ITab[] }) {
-  const [activeTabId, setActiveTabId] = useState(tabs[0].id);
+const allCurrencies: Currency[] = [
+  { name: "A curr", code: "A" },
+  { name: "B curr", code: "B" },
+  { name: "C curr", code: "C" },
+];
+
+function Home() {
+  const user = store.getState().user.user;
+  let tabs: ITab[] = user
+    ? user?.activeCurrencies.map((c) => ({
+        id: c.code,
+        tabIndex: 0,
+        active: false,
+        title: c.name,
+        currency: { name: c.name, code: c.code },
+      }))
+    : ([] as ITab[]);
+
+  useEffect(() => {
+    if (user) {
+      setTabStates([
+        ...user?.activeCurrencies.map((c) => ({
+          id: c.code,
+          tabIndex: 0,
+          active: false,
+          title: c.name,
+          currency: { name: c.name, code: c.code },
+        })),
+        {
+          id: "+",
+          tabIndex: 0,
+          active: false,
+          title: "+",
+          currency: undefined,
+        },
+      ]);
+    }
+  }, [user]);
+
+  if (tabs.length > 0) {
+    tabs[0].active = true;
+  }
+  const [activeTabId, setActiveTabId] = useState(
+    tabs.length > 0 ? tabs[0].id : "+"
+  );
   const setActiveTab = (id: string) => {
     const newState = [...tabStates];
     newState.forEach((v) => {
@@ -26,9 +70,16 @@ function Home({ tabs }: { tabs: ITab[] }) {
     ...tabs,
     { id: "+", tabIndex: 0, active: false, title: "+", currency: undefined },
   ]);
+
+  const availableCurrencies = () => {
+    return allCurrencies.filter(
+      (c) => !tabStates.some((t) => t.currency?.code === c.code)
+    );
+  };
+
   const tabContent = (tab: ITab) => {
     if (tab.id === "+") {
-      return <NewChange />;
+      return <NewChange currencies={availableCurrencies()} />;
     } else {
       return (
         <ChangeForm

@@ -1,33 +1,25 @@
 import Login from "./pages/Login";
-import { Link, Route, Routes } from "react-router-dom";
+import { Link, Route, Routes, useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Home from "./pages/Home";
 import ITab from "./types/ITab";
+import ProtectedRoute from "./pages/ProtectedRoute";
+import store from "./store";
+import { useAppDispatch } from "./hooks/useTypeSelector";
+import { logout } from "./userReducer";
+import { useEffect, useState } from "react";
 
 function App() {
-  const tabs: ITab[] = [
-    {
-      id: "A",
-      tabIndex: 0,
-      active: true,
-      title: "A currency",
-      currency: { name: "A curr", code: "A" },
-    },
-    {
-      id: "B",
-      tabIndex: 1,
-      active: false,
-      title: "B currency",
-      currency: { name: "B curr", code: "B" },
-    },
-    {
-      id: "C",
-      tabIndex: 2,
-      active: false,
-      title: "C currency",
-      currency: { name: "C curr", code: "C" },
-    },
-  ];
+  const user = store.getState().user.user;
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+    } else {
+      navigate("/login");
+    }
+  }, [user]);
   return (
     <>
       <nav className="sticky-top">
@@ -38,14 +30,25 @@ function App() {
             </Link>
           </li>
           <li className="nav-item ">
-            <Link to="/login" className="nav-link">
-              Login
+            <Link
+              to="/login"
+              onClick={async () => (user ? await dispatch(logout) : {})}
+              className="nav-link"
+            >
+              {user ? "Logout" : "Login"}
             </Link>
           </li>
         </ul>
       </nav>
       <Routes>
-        <Route path="/" element={<Home tabs={tabs} />}></Route>
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <Home />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/login" element={<Login />}></Route>
       </Routes>
     </>
