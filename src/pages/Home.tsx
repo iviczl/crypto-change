@@ -4,6 +4,7 @@ import NewChange from "../components/NewChange";
 import type { Currency } from "../types/currency";
 import ITab from "../types/ITab";
 import store from "../store";
+import { useSelector } from "react-redux";
 
 const allCurrencies: Currency[] = [
   { name: "A curr", code: "A" },
@@ -12,44 +13,37 @@ const allCurrencies: Currency[] = [
 ];
 
 function Home() {
-  const user = store.getState().user.user;
-  let tabs: ITab[] = user
-    ? user?.activeCurrencies.map((c) => ({
-        id: c.code,
-        tabIndex: 0,
-        active: false,
-        title: c.name,
-        currency: { name: c.name, code: c.code },
-      }))
-    : ([] as ITab[]);
-
-  useEffect(() => {
+  const user = useSelector(() => store.getState().user.user);
+  const currentTabStates = () => {
+    const tabs = [] as ITab[];
+    let i = 0;
     if (user) {
-      setTabStates([
-        ...user?.activeCurrencies.map((c) => ({
+      for (let c of user?.activeCurrencies) {
+        tabs.push({
           id: c.code,
-          tabIndex: 0,
-          active: false,
+          tabIndex: i,
+          active: i === 0,
           title: c.name,
           currency: { name: c.name, code: c.code },
-        })),
-        {
-          id: "+",
-          tabIndex: 0,
-          active: false,
-          title: "+",
-          currency: undefined,
-        },
-      ]);
+        });
+        i++;
+      }
     }
-  }, [user]);
+    tabs.push({
+      id: "+",
+      tabIndex: i + 1,
+      active: i === 0,
+      title: "+",
+      currency: undefined,
+    });
+    return tabs;
+  };
 
-  if (tabs.length > 0) {
-    tabs[0].active = true;
-  }
-  const [activeTabId, setActiveTabId] = useState(
-    tabs.length > 0 ? tabs[0].id : "+"
+  useEffect(
+    () => setTabStates(currentTabStates()),
+    [user, user?.activeCurrencies]
   );
+
   const setActiveTab = (id: string) => {
     const newState = [...tabStates];
     newState.forEach((v) => {
@@ -66,10 +60,9 @@ function Home() {
   };
   const usd: Currency = { name: "US Dollar", code: "USD" };
   const deleteDialog: MutableRefObject<HTMLDialogElement | null> = useRef(null);
-  const [tabStates, setTabStates] = useState([
-    ...tabs,
-    { id: "+", tabIndex: 0, active: false, title: "+", currency: undefined },
-  ]);
+  const [tabStates, setTabStates] = useState(currentTabStates());
+
+  const [activeTabId, setActiveTabId] = useState(tabStates[0].id);
 
   const availableCurrencies = () => {
     return allCurrencies.filter(
