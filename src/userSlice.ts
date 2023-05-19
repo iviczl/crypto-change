@@ -3,16 +3,22 @@ import { getUsers, logIn, logOut, updateUser } from "./services/user"
 import { IUser } from "./types/user"
 import { Currency } from "./types/currency"
 
+enum FeatureState {
+  IDLE = 'idle',
+  LOADING = 'loading',
+  SUCCEEDED = 'succeeded',
+  REJECTED = 'rejected'
+}
 
 const initialState : {
   users: IUser[] | [],
   user: IUser | null,
-  status: string,
+  status: FeatureState,
   error: string
 } = {
   users: [],
   user: null,
-  status: 'idle',
+  status: FeatureState.IDLE,
   error: ''
 }
 
@@ -26,7 +32,7 @@ const userSlice = createSlice({
     logout: (state) => {
       logOut()
       state.user = null
-      state.status = 'idle'
+      state.status = FeatureState.IDLE
     },
     addCurrency: {
       reducer:  (state, action: PayloadAction<Currency>) => { 
@@ -49,24 +55,24 @@ const userSlice = createSlice({
   extraReducers(builder) {
     builder
     .addCase(login.pending, (state, action) => {
-      state.status = 'loading'
+      state.status = FeatureState.LOADING
     })
     .addCase(login.fulfilled, (state, action) => {
-      state.status = 'succeeded',
+      state.status = FeatureState.SUCCEEDED,
       state.user = action.payload
     })
     .addCase(login.rejected, (state) => {
-      state.status = 'rejected'
+      state.status = FeatureState.REJECTED
     })
     .addCase(userList.pending, (state, action) => {
-      state.status = 'loading'
+      state.status = FeatureState.LOADING
     })
     .addCase(userList.fulfilled, (state, action) => {
-      state.status = 'succeeded',
+      state.status = FeatureState.SUCCEEDED,
       state.users = action.payload
     })
     .addCase(userList.rejected, (state) => {
-      state.status = 'rejected'
+      state.status = FeatureState.REJECTED
     })
   }
 })

@@ -3,7 +3,7 @@ import ChangeForm from "../components/ChangeForm";
 import NewChange from "../components/NewChange";
 import type { Currency } from "../types/currency";
 import ITab from "../types/ITab";
-import store from "../store";
+import type { AppStoreState } from "../store";
 import { useSelector } from "react-redux";
 
 const allCurrencies: Currency[] = [
@@ -13,12 +13,12 @@ const allCurrencies: Currency[] = [
 ];
 
 function Home() {
-  const user = useSelector(() => store.getState().user.user);
+  const user = useSelector((state: AppStoreState) => state.user.user);
   const currentTabStates = () => {
     const tabs = [] as ITab[];
     let i = 0;
     if (user) {
-      for (let c of user?.activeCurrencies) {
+      for (let c of user.activeCurrencies) {
         tabs.push({
           id: c.code,
           tabIndex: i,

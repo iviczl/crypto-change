@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { useAppDispatch } from "../hooks/useTypeSelector";
-import { login as loginAction } from "../userReducer";
+import { login as loginAction } from "../userSlice";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import store from "../store";

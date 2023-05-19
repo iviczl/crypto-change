@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Currency } from "../types/currency";
 import { useAppDispatch } from "../hooks/useTypeSelector";
-import { addCurrency } from "../userReducer";
+import { addCurrency } from "../userSlice";
 
 interface INewChange {
   currencies: Currency[];

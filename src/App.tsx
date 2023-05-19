@@ -6,7 +6,7 @@ import ITab from "./types/ITab";
 import ProtectedRoute from "./pages/ProtectedRoute";
 import store from "./store";
 import { useAppDispatch } from "./hooks/useTypeSelector";
-import { logout } from "./userReducer";
+import { logout } from "./userSlice";
 import { useEffect, useState } from "react";
 
 function App() {
