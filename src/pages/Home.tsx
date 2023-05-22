@@ -5,6 +5,8 @@ import type { Currency } from "../types/currency";
 import ITab from "../types/ITab";
 import type { AppStoreState } from "../store";
 import { useSelector } from "react-redux";
+import { useAppDispatch } from "../hooks/useTypeSelector";
+import { removeUserCurrency } from "../userSlice";
 
 const allCurrencies: Currency[] = [
   { name: "A curr", code: "A" },
@@ -14,6 +16,7 @@ const allCurrencies: Currency[] = [
 
 function Home() {
   const user = useSelector((state: AppStoreState) => state.user.user);
+  const dispatch = useAppDispatch();
   const currentTabStates = () => {
     const tabs = [] as ITab[];
     let i = 0;
@@ -39,10 +42,11 @@ function Home() {
     return tabs;
   };
 
-  useEffect(
-    () => setTabStates(currentTabStates()),
-    [user, user?.activeCurrencies]
-  );
+  useEffect(() => {
+    const newState = currentTabStates();
+    setActiveTabId(newState[0].id);
+    setTabStates(newState);
+  }, [user, user?.activeCurrencies]);
 
   const setActiveTab = (id: string) => {
     const newState = [...tabStates];
@@ -52,7 +56,13 @@ function Home() {
     setActiveTabId(id);
     setTabStates(newState);
   };
-  const deleteTab = (id: string) => {
+  const deleteTab = async (id: string) => {
+    const currency = allCurrencies.find((c) => c.code === id);
+    if (!currency) {
+      return;
+    }
+    console.log("before dispatching delete " + currency.code);
+    await dispatch(removeUserCurrency(currency.code));
     const newState = tabStates.filter((s) => s.id !== id);
     newState[0].active = true;
     setActiveTabId(newState[0].id);
@@ -116,8 +126,9 @@ function Home() {
         >
           <button
             className="btn btn-primary"
-            onClick={() => {
-              deleteTab(activeTabId);
+            onClick={async () => {
+              console.log("deletable tab:" + activeTabId);
+              await deleteTab(activeTabId);
               deleteDialog.current?.close();
             }}
           >

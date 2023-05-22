@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Currency } from "../types/currency";
 import { useAppDispatch } from "../hooks/useTypeSelector";
-import { addCurrency } from "../userSlice";
+import { addUserCurrency } from "../userSlice";
 
 interface INewChange {
   currencies: Currency[];
@@ -22,7 +22,7 @@ function NewChange(props: INewChange) {
       (c) => c.code === selectedCurrency
     );
     if (currency) {
-      await dispatch(addCurrency(currency));
+      await dispatch(addUserCurrency(currency));
     }
   };
   return (
