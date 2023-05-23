@@ -2,7 +2,7 @@ import { MutableRefObject, useEffect, useRef, useState } from "react";
 import ChangeForm from "../components/ChangeForm";
 import NewChange from "../components/NewChange";
 import type { Currency } from "../types/currency";
-import ITab from "../types/ITab";
+import ITab from "../types/tab";
 import type { AppStoreState } from "../store";
 import { useSelector } from "react-redux";
 import { useAppDispatch } from "../hooks/useTypeSelector";
@@ -161,12 +161,13 @@ function Home() {
           );
         })}
       </ul>
-      <div className="tab-content h-100" id="myTabContent">
+      <div className="tab-content h-100 p-2" id="myTabContent">
         {tabStates.map((tab) => {
           return (
             <div
               className={
-                "tab-pane fade h-100" + (tab.active ? " show active" : "")
+                "tab-pane fade d-flex flex-column flex-fill" +
+                (tab.active ? " show active" : "")
               }
               id="home-tab-pane"
               role="tabpanel"
@@ -176,7 +177,7 @@ function Home() {
               {tabContent(tab)}
               {tab.id !== "+" ? (
                 <button
-                  className="btn btn-primary mt-4 ms-4"
+                  className="btn btn-primary mt-4 me-auto ms-4"
                   onClick={() => deleteDialog.current?.showModal()}
                 >
                   Delete Currency

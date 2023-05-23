@@ -21,7 +21,7 @@ function ChangeForm(props: IChangeProps) {
   };
   return (
     <>
-      <div className="h-75">Chart</div>
+      <div className="ms-4 h-75">Chart</div>
       <div className="mt-4 ms-4 h-20">
         <label>
           <input

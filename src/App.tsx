@@ -2,7 +2,6 @@ import Login from "./pages/Login";
 import { Link, Route, Routes, useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Home from "./pages/Home";
-import ITab from "./types/ITab";
 import ProtectedRoute from "./pages/ProtectedRoute";
 import store from "./store";
 import { useAppDispatch } from "./hooks/useTypeSelector";

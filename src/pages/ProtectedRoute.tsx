@@ -1,5 +1,5 @@
-import { ReactElement, ReactNode } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { ReactElement } from "react";
+import { Navigate } from "react-router-dom";
 import store from "../store";
 
 export default function ProtectedRoute({
