@@ -1,4 +1,4 @@
-import { MutableRefObject, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import ChangeForm from "../components/ChangeForm";
 import NewChange from "../components/NewChange";
 import type { Currency } from "../types/currency";
@@ -6,7 +6,6 @@ import ITab from "../types/tab";
 import type { AppStoreState } from "../store";
 import { useSelector } from "react-redux";
 import { useAppDispatch } from "../hooks/useTypeSelector";
-import { removeUserCurrency } from "../userSlice";
 
 const allCurrencies: Currency[] = [
   { name: "A curr", code: "A" },
@@ -56,20 +55,19 @@ function Home() {
     setActiveTabId(id);
     setTabStates(newState);
   };
-  const deleteTab = async (id: string) => {
-    const currency = allCurrencies.find((c) => c.code === id);
-    if (!currency) {
-      return;
-    }
-    console.log("before dispatching delete " + currency.code);
-    await dispatch(removeUserCurrency(currency.code));
-    const newState = tabStates.filter((s) => s.id !== id);
-    newState[0].active = true;
-    setActiveTabId(newState[0].id);
-    setTabStates(newState);
-  };
+  // const deleteTab = async (id: string) => {
+  //   const currency = allCurrencies.find((c) => c.code === id);
+  //   if (!currency) {
+  //     return;
+  //   }
+  //   console.log("before dispatching delete " + currency.code);
+  //   await dispatch(removeUserCurrency(currency.code));
+  //   const newState = tabStates.filter((s) => s.id !== id);
+  //   newState[0].active = true;
+  //   setActiveTabId(newState[0].id);
+  //   setTabStates(newState);
+  // };
   const usd: Currency = { name: "US Dollar", code: "USD" };
-  const deleteDialog: MutableRefObject<HTMLDialogElement | null> = useRef(null);
   const [tabStates, setTabStates] = useState(currentTabStates());
 
   const [activeTabId, setActiveTabId] = useState(tabStates[0].id);
@@ -95,53 +93,6 @@ function Home() {
   };
   return (
     <>
-      {/* className="modal-dialog modal-dialog-centered" */}
-      <dialog
-        ref={deleteDialog}
-        style={{
-          padding: "1rem",
-          border: "1px solid ",
-          borderRadius: ".5rem",
-          borderColor: "light-grey",
-          // display: "flex",
-          // flexDirection: "column",
-          // rowGap: "1rem",
-        }}
-      >
-        <div className="modal-header" style={{ gap: "1rem" }}>
-          <h5 className="modal-title">Delete currency</h5>
-          <button
-            type="button"
-            className="btn-close"
-            aria-label="Close"
-            onClick={() => deleteDialog.current?.close()}
-          ></button>
-        </div>
-        <div className="modal-body">
-          Do you really want to drop this currency?
-        </div>
-        <div
-          className="modal-footer"
-          style={{ gap: ".5rem", marginTop: "1rem" }}
-        >
-          <button
-            className="btn btn-primary"
-            onClick={async () => {
-              console.log("deletable tab:" + activeTabId);
-              await deleteTab(activeTabId);
-              deleteDialog.current?.close();
-            }}
-          >
-            Yes
-          </button>
-          <button
-            className="btn btn-primary"
-            onClick={() => deleteDialog.current?.close()}
-          >
-            Cancel
-          </button>
-        </div>
-      </dialog>
       <ul className="nav nav-tabs" id="myTab" role="tablist">
         {tabStates.map((tab) => {
           return (
@@ -166,8 +117,8 @@ function Home() {
           return (
             <div
               className={
-                "tab-pane fade d-flex flex-column flex-fill" +
-                (tab.active ? " show active" : "")
+                "tab-pane fade  flex-column flex-fill" +
+                (tab.active ? " d-flex show active" : "")
               }
               id="home-tab-pane"
               role="tabpanel"
@@ -175,16 +126,6 @@ function Home() {
               key={tab.id}
             >
               {tabContent(tab)}
-              {tab.id !== "+" ? (
-                <button
-                  className="btn btn-primary mt-4 me-auto ms-4"
-                  onClick={() => deleteDialog.current?.showModal()}
-                >
-                  Delete Currency
-                </button>
-              ) : (
-                ""
-              )}
             </div>
           );
         })}

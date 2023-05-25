@@ -1,5 +1,5 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import { getUsers, logIn, logOut, addCurrency, removeCurrency } from "./services/user"
+import { getUsers, logIn, logOut, addCurrency, removeCurrency, updateUser } from "./services/user"
 import { IUser } from "./types/user"
 import { Currency } from "./types/currency"
 import { AppStoreState } from "./store"
@@ -25,19 +25,29 @@ const initialState : {
 
 export const userList = createAsyncThunk<IUser[]>('users/list', () => getUsers() )
 export const login = createAsyncThunk<IUser, { userName: string, password: string }>('user/login', u => logIn(u.userName, u.password) )
-export const addUserCurrency = createAsyncThunk<IUser, Currency>('user/addCurrency', async (c, api) => {
-  const state = api.getState() as AppStoreState
-  let user = state.user.user
-  if(user) {
-    user = await addCurrency(user, c)
+export const logout = createAsyncThunk('user/logout', () => logOut())
+export const addUserCurrency = createAsyncThunk('user/addCurrency', async (c: Currency, { getState}) => {
+  const state = getState() as AppStoreState
+  const user = state.user.user
+  if(!!user && !user.activeCurrencies.some(a => a.code === c.code)) {
+    const newUser = JSON.parse(JSON.stringify(user)) as IUser
+    newUser.activeCurrencies.push(c)
+    await updateUser(newUser)
+    return newUser
   }
   return user
 })
-export const removeUserCurrency = createAsyncThunk<IUser, string>('user/removeCurrency', async (code, api) => {
-  const state = api.getState() as AppStoreState
-  let user = state.user.user
+export const removeUserCurrency = createAsyncThunk('user/removeCurrency', async (code: string, {getState}) => {
+  const state = getState() as AppStoreState
+  const user = state.user.user
   if(user) {
-    user = await removeCurrency(user, code)
+    const newUser = JSON.parse(JSON.stringify(user)) as IUser
+    const index = newUser.activeCurrencies.findIndex(a => a.code === code)
+    if(index > -1) {
+      newUser.activeCurrencies.splice(index,1)
+      await updateUser(newUser)
+      return newUser
+    }
   }
   return user
 })
@@ -46,34 +56,11 @@ const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    logout: (state) => {
-      logOut()
-      state.user = null
-      state.status = FeatureState.IDLE
-    },
-    // addCurrency: {
-    //   reducer: (state, action: PayloadAction<Currency>) => { 
-    //     if(!state.user?.activeCurrencies.some(c => c.code === action.payload.code)) {
-    //       state.user?.activeCurrencies.push(action.payload)
-    //       updateUser({...(state.user || {} as IUser)})
-    //     }
-    //   },
-    //   prepare: (currency: Currency) => ({ payload: currency})
-    // },
-    // removeCurrency: {
-    //   reducer:  (state, action: PayloadAction<Currency>) => { 
-    //     const index = state.user?.activeCurrencies.findIndex(c => c.code === action.payload.code)
-    //     if(index) {
-    //       state.user?.activeCurrencies.splice(index,1)
-    //       updateUser({...(state.user || {} as IUser)})
-    //     }
-    //   },
-    //   prepare: (currency: Currency) => ({ payload: currency})
-    // }
   },
   extraReducers(builder) {
     builder
-    .addCase(login.pending, (state, action) => {
+    .addCase(login.pending, (state) => {
+      console.log('login pending')
       state.status = FeatureState.LOADING
     })
     .addCase(login.fulfilled, (state, action) => {
@@ -81,6 +68,19 @@ const userSlice = createSlice({
       state.user = action.payload
     })
     .addCase(login.rejected, (state) => {
+      state.status = FeatureState.REJECTED
+    })
+    .addCase(logout.pending, (state) => {
+      console.log('logout pending')
+      state.status = FeatureState.LOADING
+    })
+    .addCase(logout.fulfilled, (state) => {
+      state.status = FeatureState.SUCCEEDED
+      console.log('logout fullfilled')
+      state.user = null
+    })
+    .addCase(logout.rejected, (state) => {
+      console.log('logout rejected')
       state.status = FeatureState.REJECTED
     })
     .addCase(userList.pending, (state, action) => {
@@ -93,7 +93,7 @@ const userSlice = createSlice({
     .addCase(userList.rejected, (state) => {
       state.status = FeatureState.REJECTED
     })
-    .addCase(addUserCurrency.pending, (state) => {
+    .addCase(addUserCurrency.pending, (state, action) => {
       state.status = FeatureState.LOADING
     })
     .addCase(addUserCurrency.fulfilled, (state, action) => {
@@ -116,5 +116,5 @@ const userSlice = createSlice({
   }
 })
 
-export const { logout } = userSlice.actions
+// export const { } = userSlice.actions
 export default userSlice.reducer

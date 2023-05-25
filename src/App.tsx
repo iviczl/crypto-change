@@ -3,42 +3,54 @@ import { Link, Route, Routes, useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Home from "./pages/Home";
 import ProtectedRoute from "./pages/ProtectedRoute";
-import store from "./store";
+import store, { AppStoreState } from "./store";
 import { useAppDispatch } from "./hooks/useTypeSelector";
 import { logout } from "./userSlice";
-import { useEffect, useState } from "react";
+import { MouseEvent, useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 function App() {
-  const user = store.getState().user.user;
+  const user = useSelector((state: AppStoreState) => state.user.user);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   useEffect(() => {
-    if (user) {
+    if (!!user) {
       navigate("/");
     } else {
       navigate("/login");
     }
   }, [user]);
+  const loggingOut = async (e) => {
+    e.preventDefault();
+    if (!!user) {
+      console.log("loggin out");
+      await dispatch(logout());
+    }
+  };
   return (
     <>
-      <nav className="sticky-top">
-        <ul className="nav">
-          <li className="nav-item ">
-            <Link to="/" className="nav-link">
-              Home
-            </Link>
-          </li>
-          <li className="nav-item ">
-            <Link
-              to="/login"
-              onClick={async () => (user ? await dispatch(logout) : {})}
-              className="nav-link"
-            >
-              {user ? "Logout" : "Login"}
-            </Link>
-          </li>
-        </ul>
-      </nav>
+      {!!user ? (
+        <nav className="sticky-top">
+          <ul className="nav">
+            <li className="nav-item ">
+              <Link to="/" className="nav-link">
+                Home
+              </Link>
+            </li>
+            <li className="nav-item ">
+              <Link
+                to="/login"
+                onClick={async (e) => loggingOut(e)}
+                className="nav-link"
+              >
+                Logout
+              </Link>
+            </li>
+          </ul>
+        </nav>
+      ) : (
+        ""
+      )}
       <Routes>
         <Route
           path="/"
