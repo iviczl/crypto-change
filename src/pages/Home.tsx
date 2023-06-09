@@ -3,19 +3,14 @@ import ChangeForm from "../components/ChangeForm";
 import NewChange from "../components/NewChange";
 import type { Currency } from "../types/currency";
 import ITab from "../types/tab";
-import type { AppStoreState } from "../store";
+import type { AppStoreState } from "../stores/store";
 import { useSelector } from "react-redux";
-import { useAppDispatch } from "../hooks/useTypeSelector";
-
-const allCurrencies: Currency[] = [
-  { name: "A curr", code: "A" },
-  { name: "B curr", code: "B" },
-  { name: "C curr", code: "C" },
-];
+import store from "../stores/store";
+import SideBar from "../components/SideBar";
 
 function Home() {
   const user = useSelector((state: AppStoreState) => state.user.user);
-  const dispatch = useAppDispatch();
+  const allCurrencies = store.getState().currency.currencies;
   const currentTabStates = () => {
     const tabs = [] as ITab[];
     let i = 0;
@@ -92,45 +87,48 @@ function Home() {
     }
   };
   return (
-    <>
-      <ul className="nav nav-tabs" id="myTab" role="tablist">
-        {tabStates.map((tab) => {
-          return (
-            <li className="nav-item" role="presentation" key={tab.id}>
-              <button
-                className={"nav-link " + (tab.active ? "active" : "")}
-                id="home-tab"
-                data-bs-toggle="tab"
-                type="button"
-                role="tab"
-                aria-selected="true"
-                onClick={() => setActiveTab(tab.id)}
+    <div className="d-flex">
+      <SideBar />
+      <div>
+        <ul className="nav nav-tabs" id="myTab" role="tablist">
+          {tabStates.map((tab) => {
+            return (
+              <li className="nav-item" role="presentation" key={tab.id}>
+                <button
+                  className={"nav-link " + (tab.active ? "active" : "")}
+                  id="home-tab"
+                  data-bs-toggle="tab"
+                  type="button"
+                  role="tab"
+                  aria-selected="true"
+                  onClick={() => setActiveTab(tab.id)}
+                >
+                  {tab.title}
+                </button>
+              </li>
+            );
+          })}
+        </ul>
+        <div className="tab-content h-100 p-2" id="myTabContent">
+          {tabStates.map((tab) => {
+            return (
+              <div
+                className={
+                  "tab-pane fade  flex-column flex-fill" +
+                  (tab.active ? " d-flex show active" : "")
+                }
+                id="home-tab-pane"
+                role="tabpanel"
+                tabIndex={tab.tabIndex}
+                key={tab.id}
               >
-                {tab.title}
-              </button>
-            </li>
-          );
-        })}
-      </ul>
-      <div className="tab-content h-100 p-2" id="myTabContent">
-        {tabStates.map((tab) => {
-          return (
-            <div
-              className={
-                "tab-pane fade  flex-column flex-fill" +
-                (tab.active ? " d-flex show active" : "")
-              }
-              id="home-tab-pane"
-              role="tabpanel"
-              tabIndex={tab.tabIndex}
-              key={tab.id}
-            >
-              {tabContent(tab)}
-            </div>
-          );
-        })}
+                {tabContent(tab)}
+              </div>
+            );
+          })}
+        </div>
       </div>
-    </>
+    </div>
   );
 }
 

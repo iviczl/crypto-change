@@ -1,7 +1,7 @@
 import { MutableRefObject, useRef, useState } from "react";
 import type { Currency } from "../types/currency";
 import { useAppDispatch } from "../hooks/useTypeSelector";
-import { removeUserCurrency } from "../userSlice";
+import { removeUserCurrency } from "../stores/userSlice";
 
 interface IChangeProps {
   sourceCurrency: Currency;

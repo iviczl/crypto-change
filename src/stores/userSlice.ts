@@ -1,15 +1,10 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import { getUsers, logIn, logOut, addCurrency, removeCurrency, updateUser } from "./services/user"
-import { IUser } from "./types/user"
-import { Currency } from "./types/currency"
+import { getUsers, logIn, logOut, addCurrency, removeCurrency, updateUser } from "../services/user"
+import { IUser } from "../types/user"
+import { Currency } from "../types/currency"
 import { AppStoreState } from "./store"
+import { FeatureState } from "./FeatureState"
 
-enum FeatureState {
-  IDLE = 'idle',
-  LOADING = 'loading',
-  SUCCEEDED = 'succeeded',
-  REJECTED = 'rejected'
-}
 
 const initialState : {
   users: IUser[] | [],

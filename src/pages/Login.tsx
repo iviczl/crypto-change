@@ -1,9 +1,9 @@
 import { useForm } from "react-hook-form";
 import { useAppDispatch } from "../hooks/useTypeSelector";
-import { login as loginAction } from "../userSlice";
+import { login as loginAction } from "../stores/userSlice";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import store from "../store";
+import store from "../stores/store";
 function Login() {
   const { register, handleSubmit, formState } = useForm({ mode: "all" });
   const { errors, isValid } = formState;

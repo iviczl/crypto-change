@@ -1,10 +1,12 @@
-import { configureStore } from "@reduxjs/toolkit"
-import userReducer from "./userSlice"
+import { configureStore } from '@reduxjs/toolkit'
+import userReducer from './userSlice'
+import currencyReducer from './currencySlice'
 import { createLogger } from 'redux-logger'
 
 const store = configureStore({
   reducer: {
-    user: userReducer
+    user: userReducer,
+    currency: currencyReducer
   },
   middleware: (getDefault) => getDefault().concat(createLogger())
 })

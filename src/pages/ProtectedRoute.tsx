@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
 import { Navigate } from "react-router-dom";
-import store from "../store";
+import store from "../stores/store";
 
 export default function ProtectedRoute({
   children,

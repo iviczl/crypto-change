@@ -3,16 +3,23 @@ import { Link, Route, Routes, useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Home from "./pages/Home";
 import ProtectedRoute from "./pages/ProtectedRoute";
-import store, { AppStoreState } from "./store";
+import { AppStoreState } from "./stores/store";
 import { useAppDispatch } from "./hooks/useTypeSelector";
-import { logout } from "./userSlice";
+import { logout } from "./stores/userSlice";
 import { MouseEvent, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { currencyList } from "./stores/currencySlice";
 
 function App() {
   const user = useSelector((state: AppStoreState) => state.user.user);
-  const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    async function initCurrencies() {
+      await dispatch(currencyList());
+    }
+    initCurrencies();
+  }, []);
   useEffect(() => {
     if (!!user) {
       navigate("/");
@@ -20,11 +27,11 @@ function App() {
       navigate("/login");
     }
   }, [user]);
-  const loggingOut = async (e) => {
+  const loggingOut = async (e: MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     e.preventDefault();
     if (!!user) {
       console.log("loggin out");
-      await dispatch(logout());
+      await useAppDispatch()(logout());
     }
   };
   return (
