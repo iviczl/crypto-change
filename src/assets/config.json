@@ -1,0 +1,14 @@
+{
+  "api": {
+    "rest": {
+      "uri": "http://rest.coinapi.io/v1/",
+      "acceptHeader": "Accept: application/json",
+      "acceptEncodingHeader": "Accept-Encoding: deflate, gzip"
+    },
+    "ws": {
+      "uri": "ws://ws.coinapi.io/v1/"
+    },
+    "keyHeader": "X-CoinAPI-Key",
+    "key": "F7A3FA34-A643-4C0D-B20E-89DF48C0A22A"
+  }
+}

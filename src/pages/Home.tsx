@@ -89,7 +89,7 @@ function Home() {
   return (
     <div className="d-flex">
       <SideBar />
-      <div>
+      <div className="mx-4">
         <ul className="nav nav-tabs" id="myTab" role="tablist">
           {tabStates.map((tab) => {
             return (

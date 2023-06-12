@@ -7,10 +7,18 @@ function SideBar() {
     store.getState().currency.currencies
   );
   function currencyRate(currency: Currency) {
-    return <li key={currency.code}>{currency.code}</li>;
+    return (
+      <li className="list-group-item" key={currency.code}>
+        {currency.code}
+      </li>
+    );
   }
 
-  return <ul>{currencies.map((c) => currencyRate(c))}</ul>;
+  return (
+    <ul className="list-group list-group-flush">
+      {currencies.map((c) => currencyRate(c))}
+    </ul>
+  );
 }
 
 export default SideBar;
