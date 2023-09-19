@@ -1,25 +1,28 @@
-import { useForm } from "react-hook-form";
-import { useAppDispatch } from "../hooks/useTypeSelector";
-import { login as loginAction } from "../stores/userSlice";
-import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import store from "../stores/store";
-function Login() {
-  const { register, handleSubmit, formState } = useForm({ mode: "all" });
-  const { errors, isValid } = formState;
-  const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-  const user = store.getState().user.user;
-  const [loggedIn, setLoggedIn] = useState(false);
+import { useForm } from "react-hook-form"
+import { useAppDispatch } from "../hooks/useTypeSelector"
+import { login as loginAction } from "../stores/userSlice"
+import { useNavigate } from "react-router-dom"
+import { useEffect, useState } from "react"
+import store from "../stores/store"
+
+export default function Login() {
+  const { register, handleSubmit, formState } = useForm({ mode: "all" })
+  const { errors, isValid } = formState
+  const dispatch = useAppDispatch()
+  const navigate = useNavigate()
+  const user = store.getState().user.user
+  const [loggedIn, setLoggedIn] = useState(false)
+
   useEffect(() => {
     if (loggedIn && user) {
-      navigate("/");
+      navigate("/")
     }
-  }, [user, loggedIn]);
+  }, [user, loggedIn])
+
   const login = async (values: { userName: string; password: string }) => {
-    await dispatch(loginAction(values));
-    setLoggedIn(true);
-  };
+    await dispatch(loginAction(values))
+    setLoggedIn(true)
+  }
   return (
     <>
       <div className="col-3 mx-auto">
@@ -80,7 +83,5 @@ function Login() {
         </div>
       </div>
     </>
-  );
+  )
 }
-
-export default Login;
