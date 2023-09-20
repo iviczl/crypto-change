@@ -1,32 +1,27 @@
-import { MutableRefObject, useRef, useState } from "react";
-import type { Currency } from "../types/currency";
-import { useAppDispatch } from "../hooks/useTypeSelector";
-import { removeUserCurrency } from "../stores/userSlice";
+import { MutableRefObject, useEffect, useRef, useState } from "react"
+import type { Currency } from "../types/currency"
+import { useAppDispatch } from "../hooks/useTypeSelector"
+import { removeUserCurrency } from "../stores/userSlice"
 
 interface IChangeProps {
-  sourceCurrency: Currency;
-  targetCurrency: Currency;
-  rate: number;
+  sourceCurrency: Currency
+  targetCurrency: Currency
+  rate: number
 }
 function ChangeForm(props: IChangeProps) {
-  const deleteDialog: MutableRefObject<HTMLDialogElement | null> = useRef(null);
-  const [sourceCurrencyAmount, SetSourceCurrencyAmount] = useState(0);
-  const [targetCurrencyAmount, SetTargetCurrencyAmount] = useState(0);
-  const [actualRate, SetActualRate] = useState(props.rate);
-  const change = (
-    amount: number,
-    rate: number,
-    set: Function,
-    calculate: Function
-  ) => {
-    set(amount);
-    calculate(amount * rate);
-  };
-  const dispatch = useAppDispatch();
+  const deleteDialog: MutableRefObject<HTMLDialogElement | null> = useRef(null)
+  const [sourceCurrencyAmount, setSourceCurrencyAmount] = useState(0)
+  const [targetCurrencyAmount, setTargetCurrencyAmount] = useState(0)
+  const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    setSourceCurrencyAmount(sourceCurrencyAmount)
+    setTargetCurrencyAmount(sourceCurrencyAmount * props.rate)
+  }, [props.rate])
 
   const deleteCurrency = async () => {
-    await dispatch(removeUserCurrency(props.targetCurrency.code));
-  };
+    await dispatch(removeUserCurrency(props.targetCurrency.code))
+  }
 
   return (
     <>
@@ -62,8 +57,8 @@ function ChangeForm(props: IChangeProps) {
           <button
             className="btn btn-primary"
             onClick={async () => {
-              await deleteCurrency();
-              deleteDialog.current?.close();
+              await deleteCurrency()
+              deleteDialog.current?.close()
             }}
           >
             Yes
@@ -83,14 +78,10 @@ function ChangeForm(props: IChangeProps) {
             className="form-control"
             style={{ display: "inline", width: "auto" }}
             type="number"
-            onChange={(e) =>
-              change(
-                +e.target.value,
-                actualRate,
-                SetSourceCurrencyAmount,
-                SetTargetCurrencyAmount
-              )
-            }
+            onChange={(e) => {
+              setSourceCurrencyAmount(+e.target.value)
+              setTargetCurrencyAmount(+e.target.value * props.rate)
+            }}
             value={sourceCurrencyAmount}
           />
           <span className="ms-2">{props.sourceCurrency.code}</span>
@@ -101,14 +92,10 @@ function ChangeForm(props: IChangeProps) {
             className="form-control"
             style={{ display: "inline", width: "auto" }}
             type="number"
-            onChange={(e) =>
-              change(
-                +e.target.value,
-                1 / actualRate,
-                SetTargetCurrencyAmount,
-                SetSourceCurrencyAmount
-              )
-            }
+            onChange={(e) => {
+              setTargetCurrencyAmount(+e.target.value)
+              setSourceCurrencyAmount(1 / (+e.target.value * props.rate))
+            }}
             value={targetCurrencyAmount}
           />
           <span className="ms-2">{props.targetCurrency.code}</span>
@@ -121,7 +108,7 @@ function ChangeForm(props: IChangeProps) {
         Delete Currency
       </button>
     </>
-  );
+  )
 }
 
-export default ChangeForm;
+export default ChangeForm

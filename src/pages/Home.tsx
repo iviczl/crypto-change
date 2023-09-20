@@ -1,19 +1,20 @@
-import { useEffect, useState } from "react";
-import ChangeForm from "../components/ChangeForm";
-import NewChange from "../components/NewChange";
-import type { Currency } from "../types/currency";
-import ITab from "../types/tab";
-import type { AppStoreState } from "../stores/store";
-import { useSelector } from "react-redux";
-import store from "../stores/store";
-import SideBar from "../components/SideBar";
+import { useEffect, useState } from "react"
+import ChangeForm from "../components/ChangeForm"
+import NewChange from "../components/NewChange"
+import type { Currency } from "../types/currency"
+import ITab from "../types/tab"
+import type { AppStoreState } from "../stores/store"
+import { useSelector } from "react-redux"
+import store from "../stores/store"
+import SideBar from "../components/SideBar"
 
 function Home() {
-  const user = useSelector((state: AppStoreState) => state.user.user);
-  const allCurrencies = store.getState().currency.currencies;
+  const user = useSelector((state: AppStoreState) => state.user.user)
+  const rates = useSelector((state: AppStoreState) => state.currency.rates)
+  const allCurrencies = store.getState().currency.currencies
   const currentTabStates = () => {
-    const tabs = [] as ITab[];
-    let i = 0;
+    const tabs = [] as ITab[]
+    let i = 0
     if (user) {
       for (let c of user.activeCurrencies) {
         tabs.push({
@@ -22,8 +23,8 @@ function Home() {
           active: i === 0,
           title: c.name,
           currency: { name: c.name, code: c.code },
-        });
-        i++;
+        })
+        i++
       }
     }
     tabs.push({
@@ -32,24 +33,24 @@ function Home() {
       active: i === 0,
       title: "+",
       currency: undefined,
-    });
-    return tabs;
-  };
+    })
+    return tabs
+  }
 
   useEffect(() => {
-    const newState = currentTabStates();
-    setActiveTabId(newState[0].id);
-    setTabStates(newState);
-  }, [user, user?.activeCurrencies]);
+    const newState = currentTabStates()
+    setActiveTabId(newState[0].id)
+    setTabStates(newState)
+  }, [user, user?.activeCurrencies])
 
   const setActiveTab = (id: string) => {
-    const newState = [...tabStates];
+    const newState = [...tabStates]
     newState.forEach((v) => {
-      v.active = v.id === id;
-    });
-    setActiveTabId(id);
-    setTabStates(newState);
-  };
+      v.active = v.id === id
+    })
+    setActiveTabId(id)
+    setTabStates(newState)
+  }
   // const deleteTab = async (id: string) => {
   //   const currency = allCurrencies.find((c) => c.code === id);
   //   if (!currency) {
@@ -62,30 +63,33 @@ function Home() {
   //   setActiveTabId(newState[0].id);
   //   setTabStates(newState);
   // };
-  const usd: Currency = { name: "US Dollar", code: "USD" };
-  const [tabStates, setTabStates] = useState(currentTabStates());
+  const usd: Currency = { name: "US Dollar", code: "USD" }
+  const [tabStates, setTabStates] = useState(currentTabStates())
 
-  const [activeTabId, setActiveTabId] = useState(tabStates[0].id);
+  const [activeTabId, setActiveTabId] = useState(tabStates[0].id)
 
   const availableCurrencies = () => {
     return allCurrencies.filter(
       (c) => !tabStates.some((t) => t.currency?.code === c.code)
-    );
-  };
+    )
+  }
 
   const tabContent = (tab: ITab) => {
     if (tab.id === "+") {
-      return <NewChange currencies={availableCurrencies()} />;
+      return <NewChange currencies={availableCurrencies()} />
     } else {
       return (
         <ChangeForm
           sourceCurrency={usd}
           targetCurrency={tab.currency || { name: "", code: "" }}
-          rate={11}
+          rate={
+            rates.find((rate) => rate.currencyCode === tab.currency?.code)
+              ?.valueInUsd || 0
+          }
         />
-      );
+      )
     }
-  };
+  }
   return (
     <div className="d-flex">
       <SideBar />
@@ -106,7 +110,7 @@ function Home() {
                   {tab.title}
                 </button>
               </li>
-            );
+            )
           })}
         </ul>
         <div className="tab-content h-100 p-2" id="myTabContent">
@@ -124,12 +128,12 @@ function Home() {
               >
                 {tabContent(tab)}
               </div>
-            );
+            )
           })}
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default Home;
+export default Home

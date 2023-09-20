@@ -5,38 +5,49 @@ import { AppStoreState } from "./store"
 import { FeatureState } from "./FeatureState"
 import { Rate } from "../types/rate"
 
-
-const initialState: {
-  currencies: Currency[],
-  rates: Rate[],
-  status: FeatureState,
-  error: string  
-} = {
+type CurrencyState = {
+  currencies: Currency[]
+  rates: Rate[]
+  status: FeatureState
+  error: string
+}
+const initialState: CurrencyState = {
   currencies: [],
   rates: [],
   status: FeatureState.IDLE,
-  error: ''
+  error: "",
 }
 
-export const currencyList = createAsyncThunk<Currency[]>('currency/list', () => getAllCurrencies())
+export const currencyList = createAsyncThunk<Currency[]>("currency/list", () =>
+  getAllCurrencies()
+)
+
+export const rateRefresh = createAsyncThunk<Rate[], Rate[]>(
+  "rate/refresh",
+  (rates) => rates
+)
 
 const currencySlice = createSlice({
-  name: 'currency',
+  name: "currency",
   initialState,
   reducers: {},
   extraReducers(builder) {
     builder
-    .addCase(currencyList.pending, (state) => {
-      state.status = FeatureState.LOADING
-    })
-    .addCase(currencyList.fulfilled, (state, action) => {
-      state.status = FeatureState.SUCCEEDED
-      state.currencies = action.payload
-    })
-    .addCase(currencyList.rejected, (state) => {
-      state.status = FeatureState.REJECTED
-    })
-  }
+      .addCase(currencyList.pending, (state) => {
+        state.status = FeatureState.LOADING
+      })
+      .addCase(currencyList.fulfilled, (state, action) => {
+        state.status = FeatureState.SUCCEEDED
+        state.currencies = action.payload
+      })
+      .addCase(currencyList.rejected, (state) => {
+        state.status = FeatureState.REJECTED
+      })
+      .addCase(rateRefresh.fulfilled, (state, action) => {
+        // console.log(action.payload)
+        state.rates = action.payload
+      })
+  },
 })
 
 export default currencySlice.reducer

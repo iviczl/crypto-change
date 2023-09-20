@@ -1,39 +1,41 @@
-import Login from "./pages/Login";
-import { Link, Route, Routes, useNavigate } from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.min.css";
-import Home from "./pages/Home";
-import ProtectedRoute from "./pages/ProtectedRoute";
-import { AppStoreState } from "./stores/store";
-import { useAppDispatch } from "./hooks/useTypeSelector";
-import { logout } from "./stores/userSlice";
-import { MouseEvent, useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { currencyList } from "./stores/currencySlice";
+import Login from "./pages/Login"
+import { Link, Route, Routes, useNavigate } from "react-router-dom"
+import "bootstrap/dist/css/bootstrap.min.css"
+import Home from "./pages/Home"
+import ProtectedRoute from "./pages/ProtectedRoute"
+import { AppStoreState } from "./stores/store"
+import { useAppDispatch } from "./hooks/useTypeSelector"
+import { logout } from "./stores/userSlice"
+import { MouseEvent, useEffect, useState } from "react"
+import { useSelector } from "react-redux"
+import { currencyList } from "./stores/currencySlice"
+import { connectRateServer } from "./services/rateServerHandler"
 
 function App() {
-  const user = useSelector((state: AppStoreState) => state.user.user);
-  const navigate = useNavigate();
-  const dispatch = useAppDispatch();
+  const user = useSelector((state: AppStoreState) => state.user.user)
+  const navigate = useNavigate()
+  const dispatch = useAppDispatch()
   useEffect(() => {
     async function initCurrencies() {
-      await dispatch(currencyList());
+      await dispatch(currencyList())
+      await connectRateServer(dispatch)
     }
-    initCurrencies();
-  }, []);
+    initCurrencies()
+  }, [])
   useEffect(() => {
     if (!!user) {
-      navigate("/");
+      navigate("/")
     } else {
-      navigate("/login");
+      navigate("/login")
     }
-  }, [user]);
+  }, [user])
   const loggingOut = async (e: MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-    e.preventDefault();
+    e.preventDefault()
     if (!!user) {
-      console.log("loggin out");
-      await useAppDispatch()(logout());
+      console.log("loggin out")
+      await useAppDispatch()(logout())
     }
-  };
+  }
   return (
     <>
       {!!user ? (
@@ -70,7 +72,7 @@ function App() {
         <Route path="/login" element={<Login />}></Route>
       </Routes>
     </>
-  );
+  )
 }
 
-export default App;
+export default App
