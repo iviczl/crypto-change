@@ -23,6 +23,7 @@ function NewChange(props: INewChange) {
     )
     if (currency) {
       await dispatch(addUserCurrency(currency))
+      setSelectedCurrency("")
     }
   }
   return (
@@ -43,7 +44,9 @@ function NewChange(props: INewChange) {
         <div className="col-12">
           <button
             type="submit"
-            className="btn btn-primary"
+            className={
+              "btn btn-primary" + (selectedCurrency ? "" : " disabled")
+            }
             onClick={() => addCryptoCurrency()}
           >
             Add Currency

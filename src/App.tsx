@@ -15,6 +15,7 @@ function App() {
   const user = useSelector((state: AppStoreState) => state.user.user)
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
+
   useEffect(() => {
     async function initCurrencies() {
       await dispatch(currencyList())
@@ -22,6 +23,7 @@ function App() {
     }
     initCurrencies()
   }, [])
+
   useEffect(() => {
     if (!!user) {
       navigate("/")
@@ -31,7 +33,7 @@ function App() {
   }, [user])
 
   return (
-    <>
+    <div className="d-flex flex-column align-items-center">
       {user && <NavBar />}
       <Routes>
         <Route
@@ -44,7 +46,7 @@ function App() {
         />
         <Route path="/login" element={<Login />}></Route>
       </Routes>
-    </>
+    </div>
   )
 }
 
