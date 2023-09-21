@@ -1,5 +1,5 @@
 export type Rate = {
   currencyCode: string
-  valueInUsd: number
+  exchangeValue: number
   time: number
 }

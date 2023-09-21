@@ -1,15 +1,15 @@
 import Login from "./pages/Login"
-import { Link, Route, Routes, useNavigate } from "react-router-dom"
+import { Route, Routes, useNavigate } from "react-router-dom"
 import "bootstrap/dist/css/bootstrap.min.css"
 import Home from "./pages/Home"
 import ProtectedRoute from "./pages/ProtectedRoute"
 import { AppStoreState } from "./stores/store"
 import { useAppDispatch } from "./hooks/useTypeSelector"
-import { logout } from "./stores/userSlice"
-import { MouseEvent, useEffect, useState } from "react"
+import { useEffect } from "react"
 import { useSelector } from "react-redux"
 import { currencyList } from "./stores/currencySlice"
 import { connectRateServer } from "./services/rateServerHandler"
+import NavBar from "./components/NavBar"
 
 function App() {
   const user = useSelector((state: AppStoreState) => state.user.user)
@@ -29,37 +29,10 @@ function App() {
       navigate("/login")
     }
   }, [user])
-  const loggingOut = async (e: MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-    e.preventDefault()
-    if (!!user) {
-      console.log("loggin out")
-      await useAppDispatch()(logout())
-    }
-  }
+
   return (
     <>
-      {!!user ? (
-        <nav className="sticky-top">
-          <ul className="nav">
-            <li className="nav-item ">
-              <Link to="/" className="nav-link">
-                Home
-              </Link>
-            </li>
-            <li className="nav-item ">
-              <Link
-                to="/login"
-                onClick={async (e) => loggingOut(e)}
-                className="nav-link"
-              >
-                Logout
-              </Link>
-            </li>
-          </ul>
-        </nav>
-      ) : (
-        ""
-      )}
+      {user && <NavBar />}
       <Routes>
         <Route
           path="/"

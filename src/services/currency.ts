@@ -17,9 +17,9 @@ export async function getAllCurrencies() {
       currencies = JSON.parse(currenciesString)
     } else {
       currencies = [
-        { name: "A curr", code: "A" },
-        { name: "B curr", code: "B" },
-        { name: "C curr", code: "C" },
+        { name: "A currency", code: "A" },
+        { name: "B currency", code: "B" },
+        { name: "C currency", code: "C" },
       ] as Currency[]
       localStorage.setItem(CURRENCIES, JSON.stringify(currencies))
     }

@@ -84,7 +84,7 @@ function Home() {
           targetCurrency={tab.currency || { name: "", code: "" }}
           rate={
             rates.find((rate) => rate.currencyCode === tab.currency?.code)
-              ?.valueInUsd || 0
+              ?.exchangeValue || 0
           }
         />
       )

@@ -45,7 +45,7 @@ const currencySlice = createSlice({
       })
       .addCase(rateRefresh.fulfilled, (state, action) => {
         // console.log(action.payload)
-        state.rates = action.payload
+        state.rates.push(...action.payload)
       })
   },
 })
