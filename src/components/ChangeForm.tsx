@@ -71,7 +71,7 @@ function ChangeForm(props: IChangeProps) {
           </button>
         </div>
       </dialog>
-      <div className="ms-4 h-75">Chart</div>
+      <div className="m-4 h-75 col-12">Chart</div>
       <div className="mt-4 ms-4 h-20">
         <label>
           <input

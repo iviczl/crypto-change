@@ -1,34 +1,34 @@
-import { useState } from "react";
-import { Currency } from "../types/currency";
-import { useAppDispatch } from "../hooks/useTypeSelector";
-import { addUserCurrency } from "../stores/userSlice";
+import { useState } from "react"
+import { Currency } from "../types/currency"
+import { useAppDispatch } from "../hooks/useTypeSelector"
+import { addUserCurrency } from "../stores/userSlice"
 
 interface INewChange {
-  currencies: Currency[];
+  currencies: Currency[]
 }
 function NewChange(props: INewChange) {
-  const availableCurrencies = props.currencies;
+  const availableCurrencies = props.currencies
   const currencyOption = (currency: Currency) => {
     return (
       <option value={currency.code} key={currency.code}>
         {currency.name}
       </option>
-    );
-  };
-  const dispatch = useAppDispatch();
-  const [selectedCurrency, setSelectedCurrency] = useState("");
+    )
+  }
+  const dispatch = useAppDispatch()
+  const [selectedCurrency, setSelectedCurrency] = useState("")
   const addCryptoCurrency = async () => {
     const currency = availableCurrencies.find(
       (c) => c.code === selectedCurrency
-    );
+    )
     if (currency) {
-      await dispatch(addUserCurrency(currency));
+      await dispatch(addUserCurrency(currency))
     }
-  };
+  }
   return (
     <>
       <div className="container-sm mx-4 my-4 row g-3">
-        <div className="col-md-2">
+        <div className="col-12">
           <select
             className="form-select"
             value={selectedCurrency}
@@ -51,7 +51,7 @@ function NewChange(props: INewChange) {
         </div>
       </div>
     </>
-  );
+  )
 }
 
-export default NewChange;
+export default NewChange

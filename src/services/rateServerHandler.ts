@@ -17,14 +17,15 @@ function refreshRates(dispatch: AppDispatch) {
   const rates = currencyState.rates
   const newRates: Rate[] = []
 
+  const refreshTime = Date.now()
   for (const currency of currencies) {
     const lastRate = getLastRate(rates, currency)
-    const rateChange =
-      (Math.round(Math.random() * 100) / 10000) * (Math.random() > 0.5 ? 1 : -1)
+    const rateChange = (Math.random() / 100) * (Math.random() > 0.5 ? 1 : -1)
     const rate: Rate = {
       currencyCode: currency.code,
-      exchangeValue: lastRate.exchangeValue + rateChange,
-      time: Date.now(),
+      exchangeValue:
+        Math.round((lastRate.exchangeValue + rateChange) * 10000) / 10000,
+      time: refreshTime,
     }
     newRates.push(rate)
   }

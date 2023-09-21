@@ -12,15 +12,18 @@ function SideBar() {
   function currencyRate(currency: Currency) {
     const lastMinMaxRates = getLastMinMaxRates(rates, currency, 60000)
     return (
-      <li className="list-group-item" key={currency.code}>
-        {currency.code}
+      <li
+        className="list-group-item d-flex flex-row align-items-center"
+        key={currency.code}
+      >
+        <div className="fw-bold p-1">{currency.code}</div>
         <div>
           <div>
-            <img></img>
+            <img src="caret-down-fill.svg" />
             {lastMinMaxRates?.min.exchangeValue}
           </div>
           <div>
-            <img></img>
+            <img src="caret-up-fill.svg" />
             {lastMinMaxRates?.max.exchangeValue}
           </div>
         </div>

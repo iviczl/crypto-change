@@ -7,6 +7,7 @@ import type { AppStoreState } from "../stores/store"
 import { useSelector } from "react-redux"
 import store from "../stores/store"
 import SideBar from "../components/SideBar"
+import { getLastRate } from "../services/rateServerHandler"
 
 function Home() {
   const user = useSelector((state: AppStoreState) => state.user.user)
@@ -51,18 +52,6 @@ function Home() {
     setActiveTabId(id)
     setTabStates(newState)
   }
-  // const deleteTab = async (id: string) => {
-  //   const currency = allCurrencies.find((c) => c.code === id);
-  //   if (!currency) {
-  //     return;
-  //   }
-  //   console.log("before dispatching delete " + currency.code);
-  //   await dispatch(removeUserCurrency(currency.code));
-  //   const newState = tabStates.filter((s) => s.id !== id);
-  //   newState[0].active = true;
-  //   setActiveTabId(newState[0].id);
-  //   setTabStates(newState);
-  // };
   const usd: Currency = { name: "US Dollar", code: "USD" }
   const [tabStates, setTabStates] = useState(currentTabStates())
 
@@ -83,7 +72,7 @@ function Home() {
           sourceCurrency={usd}
           targetCurrency={tab.currency || { name: "", code: "" }}
           rate={
-            rates.find((rate) => rate.currencyCode === tab.currency?.code)
+            getLastRate(rates, tab.currency || { name: "", code: "" })
               ?.exchangeValue || 0
           }
         />
@@ -99,7 +88,9 @@ function Home() {
             return (
               <li className="nav-item" role="presentation" key={tab.id}>
                 <button
-                  className={"nav-link " + (tab.active ? "active" : "")}
+                  className={
+                    "nav-link " + (tab.active ? "active fw-bold" : "fw-normal")
+                  }
                   id="home-tab"
                   data-bs-toggle="tab"
                   type="button"
