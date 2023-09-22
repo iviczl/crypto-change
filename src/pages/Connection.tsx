@@ -14,7 +14,7 @@ export default function Connection() {
   }
 
   return (
-    <p className="py-5">
+    <div className="py-5">
       <div className="mx-auto pt-2">
         {isConnected
           ? "The application is connected to the rate server"
@@ -25,6 +25,6 @@ export default function Connection() {
           {isConnected ? "Close server connection" : "Connect to server"}
         </button>
       </div>
-    </p>
+    </div>
   )
 }
