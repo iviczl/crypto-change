@@ -1,0 +1,19 @@
+.data-page {
+  height: clamp(80vh, 90vh, 94vh);
+}
+.nav-bar {
+  height: clamp(1rem, 40px, 6vh);
+}
+
+.side-bar {
+  max-height: 100%;
+  overflow: hidden;
+  /* scrollbar-width: none; */
+}
+.side-bar::-webkit-scrollbar {
+  display: none;
+}
+.side-bar:hover {
+  overflow-y: scroll;
+  /* scrollbar-width: auto; */
+}

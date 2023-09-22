@@ -5,7 +5,7 @@ import store from "../stores/store"
 
 export default function NavBar() {
   return (
-    <nav className="d-flex">
+    <nav className="d-flex nav-bar">
       <div className="text-center m-0 p-1">
         <img src="person-circle.svg" title="name of the logged in user"></img>
         <span className="px-1">{store.getState().user.user?.name}</span>

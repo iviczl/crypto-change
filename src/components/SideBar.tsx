@@ -38,7 +38,7 @@ function SideBar() {
   }
 
   return (
-    <ul className="list-group list-group-flush">
+    <ul className="list-group list-group-flush p-0 ms-1 side-bar">
       {currencies.map((currency) => currencyRate(currency))}
     </ul>
   )

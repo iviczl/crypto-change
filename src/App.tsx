@@ -1,6 +1,7 @@
+import "bootstrap/dist/css/bootstrap.min.css"
+import "./pages/css/styles.css"
 import Login from "./pages/Login"
 import { Route, Routes, useNavigate } from "react-router-dom"
-import "bootstrap/dist/css/bootstrap.min.css"
 import Home from "./pages/Home"
 import ProtectedRoute from "./pages/ProtectedRoute"
 import { AppStoreState } from "./stores/store"
