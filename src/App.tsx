@@ -7,9 +7,9 @@ import { AppStoreState } from "./stores/store"
 import { useAppDispatch } from "./hooks/useTypeSelector"
 import { useEffect } from "react"
 import { useSelector } from "react-redux"
-import { currencyList } from "./stores/currencySlice"
-import { connectRateServer } from "./services/rateServerHandler"
+import { connectionToggle, currencyList } from "./stores/currencySlice"
 import NavBar from "./components/NavBar"
+import Connection from "./pages/Connection"
 
 function App() {
   const user = useSelector((state: AppStoreState) => state.user.user)
@@ -19,7 +19,7 @@ function App() {
   useEffect(() => {
     async function initCurrencies() {
       await dispatch(currencyList())
-      await connectRateServer(dispatch)
+      await dispatch(connectionToggle({ on: true, dispatch }))
     }
     initCurrencies()
   }, [])
@@ -41,6 +41,14 @@ function App() {
           element={
             <ProtectedRoute>
               <Home />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/connection"
+          element={
+            <ProtectedRoute>
+              <Connection />
             </ProtectedRoute>
           }
         />

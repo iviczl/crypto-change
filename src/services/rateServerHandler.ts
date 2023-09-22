@@ -3,15 +3,33 @@ import store, { AppDispatch } from "../stores/store"
 import { Currency } from "../types/currency"
 import { Rate } from "../types/rate"
 
-export async function connectRateServer(dispatch: AppDispatch) {
+let intervalId: NodeJS.Timeout
+let dispatch: AppDispatch
+
+export function rateServerConnectToggle(
+  on: boolean,
+  appDispatch: AppDispatch | null = null
+) {
+  if (appDispatch !== null) {
+    dispatch = appDispatch
+  }
+  if (on) {
+    connectRateServer()
+  } else {
+    clearInterval(intervalId)
+  }
+}
+
+export async function connectRateServer() {
   /// TODO create code for a real server connection
-  refreshRates(dispatch)
-  setInterval(() => {
-    refreshRates(dispatch)
+
+  dispatch(rateRefresh(refreshRates()))
+  intervalId = setInterval(() => {
+    dispatch(rateRefresh(refreshRates()))
   }, 60000)
 }
 
-function refreshRates(dispatch: AppDispatch) {
+function refreshRates() {
   const currencyState = store.getState().currency
   const currencies = currencyState.currencies
   const rates = currencyState.rates
@@ -29,7 +47,7 @@ function refreshRates(dispatch: AppDispatch) {
     }
     newRates.push(rate)
   }
-  dispatch(rateRefresh(newRates))
+  return newRates
 }
 
 export function getLastRate(rates: Rate[], currency: Currency) {
