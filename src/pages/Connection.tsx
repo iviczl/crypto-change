@@ -14,7 +14,7 @@ export default function Connection() {
   }
 
   return (
-    <div className="py-5">
+    <div className="py-5 connection-page">
       <div className="mx-auto pt-2">
         {isConnected ? (
           <div>

@@ -2,7 +2,10 @@
   height: clamp(80vh, 90vh, 94vh);
 }
 .nav-bar {
-  height: clamp(1rem, 40px, 6vh);
+  height: clamp(1rem, 2rem, 6vh);
+}
+.connection-page {
+  width: clamp(10rem, 22rem, 35.625rem);
 }
 
 .side-bar {
