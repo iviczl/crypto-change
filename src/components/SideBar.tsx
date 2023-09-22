@@ -19,11 +19,17 @@ function SideBar() {
         <div className="fw-bold p-1">{currency.code}</div>
         <div>
           <div>
-            <img src="caret-down-fill.svg" />
+            <img
+              src="caret-down-fill.svg"
+              title="last minute minimum exchange rate value for the currency"
+            />
             {lastMinMaxRates?.min.exchangeValue}
           </div>
           <div>
-            <img src="caret-up-fill.svg" />
+            <img
+              src="caret-up-fill.svg"
+              title="last minute maximum exchange rate value for the currency"
+            />
             {lastMinMaxRates?.max.exchangeValue}
           </div>
         </div>

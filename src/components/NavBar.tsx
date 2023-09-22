@@ -1,4 +1,4 @@
-import { Link, NavLink, Route } from "react-router-dom"
+import { NavLink } from "react-router-dom"
 import { useAppDispatch } from "../hooks/useTypeSelector"
 import { logout } from "../stores/userSlice"
 import store from "../stores/store"
@@ -6,7 +6,10 @@ import store from "../stores/store"
 export default function NavBar() {
   return (
     <nav className="d-flex">
-      <p className="text-center m-0 p-1">{store.getState().user.user?.name}</p>
+      <div className="text-center m-0 p-1">
+        <img src="person-circle.svg" title="name of the logged in user"></img>
+        <span className="px-1">{store.getState().user.user?.name}</span>
+      </div>
       <ul className="nav">
         <li className="nav-item ">
           <NavLink

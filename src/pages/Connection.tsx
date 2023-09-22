@@ -16,9 +16,14 @@ export default function Connection() {
   return (
     <div className="py-5">
       <div className="mx-auto pt-2">
-        {isConnected
-          ? "The application is connected to the rate server"
-          : "There is no server connection"}
+        {isConnected ? (
+          <div>
+            <p>The application is connected to the rate server.</p>
+            <p>Now exchange rates will be refreshed in every minute.</p>
+          </div>
+        ) : (
+          <p>There is no server connection</p>
+        )}
       </div>
       <div className="mx-auto pt-2" style={{ width: "200px" }}>
         <button className="btn btn-primary" onClick={toggleConnect}>
