@@ -60,6 +60,19 @@ export function getLastRate(rates: Rate[], currency: Currency) {
     )
 }
 
+export function getLastRates(
+  rates: Rate[],
+  currency: Currency,
+  start: number,
+  end: number
+) {
+  return rates.filter(
+    (rate) =>
+      rate.currencyCode === currency.code &&
+      rate.time >= start &&
+      rate.time <= end
+  )
+}
 export function getLastMinMaxRates(
   rates: Rate[],
   currency: Currency,
