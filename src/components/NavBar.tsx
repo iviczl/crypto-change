@@ -1,7 +1,7 @@
-import { NavLink } from "react-router-dom"
-import { useAppDispatch } from "../hooks/useTypeSelector"
-import { logout } from "../stores/userSlice"
-import store from "../stores/store"
+import { NavLink } from 'react-router-dom'
+import { useAppDispatch } from '../hooks/useTypeSelector'
+import { logout } from '../stores/userSlice'
+import store from '../stores/store'
 
 export default function NavBar() {
   return (
@@ -15,7 +15,7 @@ export default function NavBar() {
           <NavLink
             to="/"
             className={({ isActive }) =>
-              "nav-link text-dark" + (isActive ? " fw-bold" : "")
+              'nav-link text-dark' + (isActive ? ' fw-bold' : '')
             }
           >
             Data
@@ -25,7 +25,7 @@ export default function NavBar() {
           <NavLink
             to="/connection"
             className={({ isActive }) =>
-              "nav-link text-dark" + (isActive ? " fw-bold" : "")
+              'nav-link text-dark' + (isActive ? ' fw-bold' : '')
             }
           >
             Connection

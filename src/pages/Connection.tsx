@@ -1,7 +1,7 @@
-import { useAppDispatch } from "../hooks/useTypeSelector"
-import { connectionToggle } from "../stores/currencySlice"
-import { AppStoreState } from "../stores/store"
-import { useSelector } from "react-redux"
+import { useAppDispatch } from '../hooks/useTypeSelector'
+import { connectionToggle } from '../stores/currencySlice'
+import { AppStoreState } from '../stores/store'
+import { useSelector } from 'react-redux'
 
 export default function Connection() {
   const dispatch = useAppDispatch()
@@ -25,9 +25,9 @@ export default function Connection() {
           <p>There is no server connection</p>
         )}
       </div>
-      <div className="mx-auto pt-2" style={{ width: "200px" }}>
+      <div className="mx-auto pt-2" style={{ width: '200px' }}>
         <button className="btn btn-primary" onClick={toggleConnect}>
-          {isConnected ? "Close server connection" : "Connect to server"}
+          {isConnected ? 'Close server connection' : 'Connect to server'}
         </button>
       </div>
     </div>

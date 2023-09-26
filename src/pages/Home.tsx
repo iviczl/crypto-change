@@ -1,13 +1,13 @@
-import { useEffect, useState } from "react"
-import ChangeForm from "../components/ChangeForm"
-import NewChange from "../components/NewChange"
-import type { Currency } from "../types/currency"
-import ITab from "../types/tab"
-import type { AppStoreState } from "../stores/store"
-import { useSelector } from "react-redux"
-import store from "../stores/store"
-import SideBar from "../components/SideBar"
-import { getLastRate } from "../services/rateServerHandler"
+import { useEffect, useState } from 'react'
+import ChangeForm from '../components/ChangeForm'
+import NewChange from '../components/NewChange'
+import type { Currency } from '../types/currency'
+import ITab from '../types/tab'
+import type { AppStoreState } from '../stores/store'
+import { useSelector } from 'react-redux'
+import store from '../stores/store'
+import SideBar from '../components/SideBar'
+import { getLastRate } from '../services/rateServerHandler'
 
 function Home() {
   const user = useSelector((state: AppStoreState) => state.user.user)
@@ -29,10 +29,10 @@ function Home() {
       }
     }
     tabs.push({
-      id: "+",
+      id: '+',
       tabIndex: i + 1,
       active: i === 0,
-      title: "+",
+      title: '+',
       currency: undefined,
     })
     return tabs
@@ -52,7 +52,7 @@ function Home() {
     setActiveTabId(id)
     setTabStates(newState)
   }
-  const usd: Currency = { name: "US Dollar", code: "USD" }
+  const usd: Currency = { name: 'US Dollar', code: 'USD' }
   const [tabStates, setTabStates] = useState(currentTabStates())
 
   const [activeTabId, setActiveTabId] = useState(tabStates[0].id)
@@ -64,15 +64,15 @@ function Home() {
   }
 
   const tabContent = (tab: ITab) => {
-    if (tab.id === "+") {
+    if (tab.id === '+') {
       return <NewChange currencies={availableCurrencies()} />
     } else {
       return (
         <ChangeForm
           sourceCurrency={usd}
-          targetCurrency={tab.currency || { name: "", code: "" }}
+          targetCurrency={tab.currency || { name: '', code: '' }}
           rate={
-            getLastRate(rates, tab.currency || { name: "", code: "" })
+            getLastRate(rates, tab.currency || { name: '', code: '' })
               ?.exchangeValue || 0
           }
         />
@@ -90,7 +90,7 @@ function Home() {
               <li className="nav-item" role="presentation" key={tab.id}>
                 <button
                   className={
-                    "nav-link " + (tab.active ? "active fw-bold" : "fw-normal")
+                    'nav-link ' + (tab.active ? 'active fw-bold' : 'fw-normal')
                   }
                   id="home-tab"
                   data-bs-toggle="tab"
@@ -110,8 +110,8 @@ function Home() {
             return (
               <div
                 className={
-                  "tab-pane fade  flex-column flex-fill" +
-                  (tab.active ? " d-flex show active" : "")
+                  'tab-pane fade  flex-column flex-fill' +
+                  (tab.active ? ' d-flex show active' : '')
                 }
                 id="home-tab-pane"
                 role="tabpanel"

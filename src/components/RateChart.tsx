@@ -1,4 +1,4 @@
-import * as echarts from "echarts/core"
+import * as echarts from 'echarts/core'
 import {
   TitleComponent,
   TitleComponentOption,
@@ -10,20 +10,20 @@ import {
   GridComponentOption,
   LegendComponent,
   LegendComponentOption,
-} from "echarts/components"
-import { LineChart, LineSeriesOption } from "echarts/charts"
-import { UniversalTransition } from "echarts/features"
-import { CanvasRenderer } from "echarts/renderers"
+} from 'echarts/components'
+import { LineChart, LineSeriesOption } from 'echarts/charts'
+import { UniversalTransition } from 'echarts/features'
+import { CanvasRenderer } from 'echarts/renderers'
 // import { EChartsOption } from "echarts"
-import { ECBasicOption } from "echarts/types/dist/shared"
+import { ECBasicOption } from 'echarts/types/dist/shared'
 import {
   CSSProperties,
   StyleHTMLAttributes,
   useEffect,
   useRef,
   useState,
-} from "react"
-import React from "react"
+} from 'react'
+import React from 'react'
 
 // export type EChartsOption = echarts.ComposeOption<
 // | TitleComponentOption
@@ -43,18 +43,18 @@ export default function RateChart({
 }) {
   const defaultOptions: ECBasicOption = {
     title: {
-      text: "Stacked Line",
+      text: 'Stacked Line',
     },
     tooltip: {
-      trigger: "axis",
+      trigger: 'axis',
     },
     legend: {
       data: [],
     },
     grid: {
-      left: "3%",
-      right: "4%",
-      bottom: "3%",
+      left: '3%',
+      right: '4%',
+      bottom: '3%',
       containLabel: true,
     },
     toolbox: {
@@ -63,12 +63,12 @@ export default function RateChart({
       },
     },
     xAxis: {
-      type: "category",
+      type: 'category',
       boundaryGap: false,
       data: [],
     },
     yAxis: {
-      type: "value",
+      type: 'value',
     },
     series: [],
   }

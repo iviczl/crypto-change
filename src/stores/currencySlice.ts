@@ -1,10 +1,10 @@
-import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import { getAllCurrencies } from "../services/currency"
-import { Currency } from "../types/currency"
-import { AppDispatch, AppStoreState } from "./store"
-import { FeatureState } from "./FeatureState"
-import { Rate } from "../types/rate"
-import { rateServerConnectToggle } from "../services/rateServerHandler"
+import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { getAllCurrencies } from '../services/currency'
+import { Currency } from '../types/currency'
+import { AppDispatch, AppStoreState } from './store'
+import { FeatureState } from './FeatureState'
+import { Rate } from '../types/rate'
+import { rateServerConnectToggle } from '../services/rateServerHandler'
 
 type CurrencyState = {
   currencies: Currency[]
@@ -18,15 +18,15 @@ const initialState: CurrencyState = {
   rates: [],
   rateServerConnected: false,
   status: FeatureState.IDLE,
-  error: "",
+  error: '',
 }
 
-export const currencyList = createAsyncThunk<Currency[]>("currency/list", () =>
+export const currencyList = createAsyncThunk<Currency[]>('currency/list', () =>
   getAllCurrencies()
 )
 
 export const rateRefresh = createAsyncThunk<Rate[], Rate[]>(
-  "rate/refresh",
+  'rate/refresh',
   (rates) => rates
 )
 
@@ -36,7 +36,7 @@ interface IConnectionToggle {
 }
 
 export const connectionToggle = createAsyncThunk<boolean, IConnectionToggle>(
-  "currency/rateServerConnectToggle",
+  'currency/rateServerConnectToggle',
   (toggle) => {
     rateServerConnectToggle(toggle.on, toggle.dispatch)
     return toggle.on
@@ -44,7 +44,7 @@ export const connectionToggle = createAsyncThunk<boolean, IConnectionToggle>(
 )
 
 const currencySlice = createSlice({
-  name: "currency",
+  name: 'currency',
   initialState,
   reducers: {},
   extraReducers(builder) {

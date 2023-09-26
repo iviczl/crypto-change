@@ -1,8 +1,7 @@
-import { Currency } from "./currency";
+import { Currency } from './currency'
 
 export interface IUser {
-  name: string,
-  rights: string[],
+  name: string
+  rights: string[]
   activeCurrencies: Currency[]
 }
-

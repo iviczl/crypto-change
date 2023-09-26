@@ -1,4 +1,4 @@
 export type Currency = {
-  name: string,
+  name: string
   code: string
 }

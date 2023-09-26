@@ -1,7 +1,7 @@
-import { rateRefresh } from "../stores/currencySlice"
-import store, { AppDispatch } from "../stores/store"
-import { Currency } from "../types/currency"
-import { Rate } from "../types/rate"
+import { rateRefresh } from '../stores/currencySlice'
+import store, { AppDispatch } from '../stores/store'
+import { Currency } from '../types/currency'
+import { Rate } from '../types/rate'
 
 let intervalId: NodeJS.Timeout
 let dispatch: AppDispatch

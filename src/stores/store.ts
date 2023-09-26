@@ -6,9 +6,9 @@ import { createLogger } from 'redux-logger'
 const store = configureStore({
   reducer: {
     user: userReducer,
-    currency: currencyReducer
+    currency: currencyReducer,
   },
-  middleware: (getDefault) => getDefault().concat(createLogger())
+  middleware: (getDefault) => getDefault().concat(createLogger()),
 })
 
 export type AppDispatch = typeof store.dispatch

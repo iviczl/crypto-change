@@ -1,7 +1,7 @@
-import { useState } from "react"
-import { Currency } from "../types/currency"
-import { useAppDispatch } from "../hooks/useTypeSelector"
-import { addUserCurrency } from "../stores/userSlice"
+import { useState } from 'react'
+import { Currency } from '../types/currency'
+import { useAppDispatch } from '../hooks/useTypeSelector'
+import { addUserCurrency } from '../stores/userSlice'
 
 interface INewChange {
   currencies: Currency[]
@@ -16,14 +16,14 @@ function NewChange(props: INewChange) {
     )
   }
   const dispatch = useAppDispatch()
-  const [selectedCurrency, setSelectedCurrency] = useState("")
+  const [selectedCurrency, setSelectedCurrency] = useState('')
   const addCryptoCurrency = async () => {
     const currency = availableCurrencies.find(
       (c) => c.code === selectedCurrency
     )
     if (currency) {
       await dispatch(addUserCurrency(currency))
-      setSelectedCurrency("")
+      setSelectedCurrency('')
     }
   }
   return (
@@ -45,7 +45,7 @@ function NewChange(props: INewChange) {
           <button
             type="submit"
             className={
-              "btn btn-primary" + (selectedCurrency ? "" : " disabled")
+              'btn btn-primary' + (selectedCurrency ? '' : ' disabled')
             }
             onClick={() => addCryptoCurrency()}
           >

@@ -1,12 +1,12 @@
-import { MutableRefObject, useEffect, useRef, useState } from "react"
-import type { Currency } from "../types/currency"
-import { useAppDispatch } from "../hooks/useTypeSelector"
-import { removeUserCurrency } from "../stores/userSlice"
-import RateChart from "./RateChart"
+import { MutableRefObject, useEffect, useRef, useState } from 'react'
+import type { Currency } from '../types/currency'
+import { useAppDispatch } from '../hooks/useTypeSelector'
+import { removeUserCurrency } from '../stores/userSlice'
+import RateChart from './RateChart'
 // import { EChartsOption } from "echarts"
-import { ECBasicOption } from "echarts/types/dist/shared"
-import store from "../stores/store"
-import { getLastRates } from "../services/rateServerHandler"
+import { ECBasicOption } from 'echarts/types/dist/shared'
+import store from '../stores/store'
+import { getLastRates } from '../services/rateServerHandler'
 
 interface IChangeProps {
   sourceCurrency: Currency
@@ -22,18 +22,18 @@ function ChangeForm(props: IChangeProps) {
 
   const [chartOptions, setChartOptions] = useState({
     title: {
-      text: "",
+      text: '',
     },
     xAxis: {
-      type: "category",
+      type: 'category',
       boundaryGap: false,
-      data: [""], //["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+      data: [''], //["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
     },
     series: [
       {
-        name: "",
-        type: "line",
-        stack: "Total",
+        name: '',
+        type: 'line',
+        stack: 'Total',
         data: [0], // [120, 132, 101, 134, 90, 230, 210]
       },
     ],
@@ -50,7 +50,7 @@ function ChangeForm(props: IChangeProps) {
       now
     )
     setChartOptions((options) => ({
-      title: { text: props.targetCurrency.name + " exchange rates" },
+      title: { text: props.targetCurrency.name + ' exchange rates' },
       xAxis: {
         ...options.xAxis,
         data: [
@@ -60,8 +60,8 @@ function ChangeForm(props: IChangeProps) {
       series: [
         {
           name: props.targetCurrency.code,
-          type: "line",
-          stack: "Total",
+          type: 'line',
+          stack: 'Total',
           data: [...chartData.map((item) => item.exchangeValue)],
         },
       ],
@@ -78,16 +78,16 @@ function ChangeForm(props: IChangeProps) {
       <dialog
         ref={deleteDialog}
         style={{
-          padding: "1rem",
-          border: "1px solid ",
-          borderRadius: ".5rem",
-          borderColor: "light-grey",
+          padding: '1rem',
+          border: '1px solid ',
+          borderRadius: '.5rem',
+          borderColor: 'light-grey',
           // display: "flex",
           // flexDirection: "column",
           // rowGap: "1rem",
         }}
       >
-        <div className="modal-header" style={{ gap: "1rem" }}>
+        <div className="modal-header" style={{ gap: '1rem' }}>
           <h5 className="modal-title">Delete currency</h5>
           <button
             type="button"
@@ -101,7 +101,7 @@ function ChangeForm(props: IChangeProps) {
         </div>
         <div
           className="modal-footer"
-          style={{ gap: ".5rem", marginTop: "1rem" }}
+          style={{ gap: '.5rem', marginTop: '1rem' }}
         >
           <button
             className="btn btn-primary"
@@ -123,14 +123,14 @@ function ChangeForm(props: IChangeProps) {
       <div className="m-4 h-75 col-12">
         <RateChart
           options={chartOptions}
-          style={{ width: "500px", height: "250px" }}
+          style={{ width: '500px', height: '250px' }}
         />
       </div>
       <div className="mt-4 ms-4 h-20">
         <label>
           <input
             className="form-control"
-            style={{ display: "inline", width: "auto" }}
+            style={{ display: 'inline', width: 'auto' }}
             type="number"
             onChange={(e) => {
               setSourceCurrencyAmount(+e.target.value)
@@ -144,7 +144,7 @@ function ChangeForm(props: IChangeProps) {
         <label>
           <input
             className="form-control"
-            style={{ display: "inline", width: "auto" }}
+            style={{ display: 'inline', width: 'auto' }}
             type="number"
             onChange={(e) => {
               setTargetCurrencyAmount(+e.target.value)

@@ -1,9 +1,9 @@
-import { Currency } from "../types/currency"
-import { IUser } from "../types/user"
+import { Currency } from '../types/currency'
+import { IUser } from '../types/user'
 
 export async function getUsers() {
   const usersString = localStorage.getItem('users')
-  if(usersString) {
+  if (usersString) {
     return JSON.parse(usersString) as IUser[]
   }
   return [] as IUser[]
@@ -11,9 +11,13 @@ export async function getUsers() {
 
 export async function logIn(userName: string, password: string) {
   const users = await getUsers()
-  let user: IUser = { name: userName, rights: [], activeCurrencies: [] as Currency[] }
-  const foundUser = users.find(u => u.name === userName)
-  if(!!foundUser) {
+  let user: IUser = {
+    name: userName,
+    rights: [],
+    activeCurrencies: [] as Currency[],
+  }
+  const foundUser = users.find((u) => u.name === userName)
+  if (!!foundUser) {
     user = foundUser
   } else {
     users.push(user)
@@ -27,13 +31,13 @@ export async function logOut() {
 }
 
 // export async function addCurrency(oldUser: IUser, currency: Currency){
-  // let user = {...oldUser}
-  // user.activeCurrencies = [...oldUser.activeCurrencies]
-  // if(!user?.activeCurrencies.some(a => a.code === currency.code)) {
-  //   user?.activeCurrencies.push(currency)
-  //   await updateUser(user)
-  // }
-  // return user
+// let user = {...oldUser}
+// user.activeCurrencies = [...oldUser.activeCurrencies]
+// if(!user?.activeCurrencies.some(a => a.code === currency.code)) {
+//   user?.activeCurrencies.push(currency)
+//   await updateUser(user)
+// }
+// return user
 // }
 
 // export async function removeCurrency(oldUser: IUser, currencyCode: string) {
@@ -50,10 +54,8 @@ export async function logOut() {
 
 export async function updateUser(user: IUser) {
   const users = await getUsers()
-  const index = users.findIndex(u => u.name === user.name)
+  const index = users.findIndex((u) => u.name === user.name)
   users[index] = user
   localStorage.setItem('users', JSON.stringify(users))
   return user
 }
-
-

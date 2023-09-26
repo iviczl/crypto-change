@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react"
-import store, { AppStoreState } from "../stores/store"
-import { Currency } from "../types/currency"
-import { useSelector } from "react-redux"
-import { getLastMinMaxRates, getLastRate } from "../services/rateServerHandler"
+import { useEffect, useState } from 'react'
+import store, { AppStoreState } from '../stores/store'
+import { Currency } from '../types/currency'
+import { useSelector } from 'react-redux'
+import { getLastMinMaxRates, getLastRate } from '../services/rateServerHandler'
 
 function SideBar() {
   const currencyStore = store.getState().currency

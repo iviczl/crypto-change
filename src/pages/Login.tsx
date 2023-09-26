@@ -1,12 +1,12 @@
-import { useForm } from "react-hook-form"
-import { useAppDispatch } from "../hooks/useTypeSelector"
-import { login as loginAction } from "../stores/userSlice"
-import { useNavigate } from "react-router-dom"
-import { useEffect, useState } from "react"
-import store from "../stores/store"
+import { useForm } from 'react-hook-form'
+import { useAppDispatch } from '../hooks/useTypeSelector'
+import { login as loginAction } from '../stores/userSlice'
+import { useNavigate } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import store from '../stores/store'
 
 export default function Login() {
-  const { register, handleSubmit, formState } = useForm({ mode: "all" })
+  const { register, handleSubmit, formState } = useForm({ mode: 'all' })
   const { errors, isValid } = formState
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
@@ -15,7 +15,7 @@ export default function Login() {
 
   useEffect(() => {
     if (loggedIn && user) {
-      navigate("/")
+      navigate('/')
     }
   }, [user, loggedIn])
 
@@ -40,11 +40,11 @@ export default function Login() {
             type="text"
             className="form-control"
             id="userName"
-            {...register("userName", {
-              required: "Required",
+            {...register('userName', {
+              required: 'Required',
               pattern: {
                 value: /^[a-zA-Z]{6,20}$/i,
-                message: "User name must be 6-20 character long.",
+                message: 'User name must be 6-20 character long.',
               },
             })}
           />
@@ -62,11 +62,11 @@ export default function Login() {
             type="password"
             className="form-control"
             id="password"
-            {...register("password", {
-              required: "Required",
+            {...register('password', {
+              required: 'Required',
               pattern: {
                 value: /^.{6,50}$/i,
-                message: "Password must be 6-50 character long.",
+                message: 'Password must be 6-50 character long.',
               },
             })}
           />
