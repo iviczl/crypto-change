@@ -1,16 +1,30 @@
 import { NavLink } from 'react-router-dom'
 import { useAppDispatch } from '../hooks/useTypeSelector'
 import { logout } from '../stores/userSlice'
-import store from '../stores/store'
+import store, { AppStoreState } from '../stores/store'
+import { useSelector } from 'react-redux'
 
 export default function NavBar() {
+  const isConnected = useSelector(
+    (state: AppStoreState) => state.currency.rateServerConnected
+  )
   return (
-    <nav className="d-flex nav-bar">
-      <div className="text-center m-0 p-1">
-        <img src="person-circle.svg" title="name of the logged in user"></img>
-        <span className="px-1">{store.getState().user.user?.name}</span>
+    <nav className="d-flex nav-bar m-0">
+      <div className="d-flex flex-shrink-1 justify-content-start text-center m-0 p-1">
+        <img
+          className="m-1"
+          src="person-circle.svg"
+          title={'User: ' + store.getState().user.user?.name}
+        ></img>
+        <img
+          className={'m-1' + (isConnected ? '' : ' disabled-color')}
+          src="globe.svg"
+          title={
+            isConnected ? 'Connected to exchange rate server' : 'No connection'
+          }
+        ></img>
       </div>
-      <ul className="nav">
+      <ul className="d-flex w-100 justify-content-end nav">
         <li className="nav-item ">
           <NavLink
             to="/"

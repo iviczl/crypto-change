@@ -34,7 +34,7 @@ function App() {
   }, [user])
 
   return (
-    <div className="d-flex flex-column align-items-center">
+    <div className="page d-flex flex-column align-items-center">
       {user && <NavBar />}
       <Routes>
         <Route

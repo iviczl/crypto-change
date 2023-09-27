@@ -1,3 +1,4 @@
+import useOnline from '../hooks/useOnline'
 import { useAppDispatch } from '../hooks/useTypeSelector'
 import { connectionToggle } from '../stores/currencySlice'
 import { AppStoreState } from '../stores/store'
@@ -5,12 +6,13 @@ import { useSelector } from 'react-redux'
 
 export default function Connection() {
   const dispatch = useAppDispatch()
+
   const isConnected = useSelector(
     (state: AppStoreState) => state.currency.rateServerConnected
   )
 
   const toggleConnect = async () => {
-    dispatch(connectionToggle({ on: !isConnected, dispatch }))
+    await dispatch(connectionToggle({ on: !isConnected, dispatch }))
   }
 
   return (

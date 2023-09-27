@@ -25,7 +25,7 @@ export default function Login() {
   }
   return (
     <>
-      <div className="col-3 mx-auto">
+      <div className="col-10 mx-auto">
         <div className="text-center display-6">Login</div>
         <div className="justify-content-center pt-2">
           <div className="d-flex justify-content-between">

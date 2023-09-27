@@ -1,7 +1,12 @@
+.page {
+  width: 700px;
+  margin-inline: auto;
+}
 .data-page {
   height: clamp(80vh, 90vh, 94vh);
 }
 .nav-bar {
+  width: 100%;
   height: clamp(1rem, 2rem, 6vh);
 }
 .connection-page {
@@ -19,4 +24,9 @@
 .side-bar:hover {
   overflow-y: scroll;
   /* scrollbar-width: auto; */
+}
+
+.disabled-color {
+  filter: invert(72%) sepia(2%) saturate(3%) hue-rotate(326deg) brightness(95%)
+    contrast(89%);
 }
