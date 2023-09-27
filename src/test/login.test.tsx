@@ -1,10 +1,12 @@
-// import { describe, expect, test } from "vitest"
+import { describe, expect, test } from 'vitest'
 import { render, screen } from '@testing-library/react'
-import Login from '../pages/Login.tsx'
+import Login from '../pages/Login'
+import { renderWithRouterAndStoreProvider } from './testUtils'
+// import App from '../App.tsx'
 
 describe('Login component tests', () => {
   test('Login completely rendered', async () => {
-    render(<Login />)
+    renderWithRouterAndStoreProvider(<Login />)
     const userNameInput = await screen.findByTestId('userName')
     expect(userNameInput).toBeDefined()
     const passwordInput = await screen.findByTestId('password')

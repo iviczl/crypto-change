@@ -39,7 +39,7 @@ export default function Login() {
           <input
             type="text"
             className="form-control"
-            id="userName"
+            data-testid="userName"
             {...register('userName', {
               required: 'Required',
               pattern: {
@@ -61,7 +61,7 @@ export default function Login() {
           <input
             type="password"
             className="form-control"
-            id="password"
+            data-testid="password"
             {...register('password', {
               required: 'Required',
               pattern: {

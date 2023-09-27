@@ -1,3 +1,13 @@
+import { expect, afterEach } from 'vitest'
+import { cleanup } from '@testing-library/react'
+import * as matchers from '@testing-library/jest-dom/matchers'
+
+expect.extend(matchers)
+
+afterEach(() => {
+  cleanup()
+})
+
 // import { afterEach } from "vitest"
 // import { cleanup } from "@testing-library/react"
 // import "@testing-library/jest-dom/vitest"
@@ -12,13 +22,9 @@
 // window.$RefreshSig$ = () => (type) => type
 // window.__vite_plugin_react_preamble_installed__ = true
 
-// import matchers from "@testing-library/jest-dom/matchers"
-// import { expect } from "vitest"
-// expect.extend(matchers)
-
-// import { beforeAll } from "vitest"
+// import { beforeAll } from 'vitest'
 // beforeAll(() => {
-//   const refresh = import("/@react-refresh")
+//   const refresh = import('/@react-refresh')
 //   console.log(refresh)
 //   refresh.injectIntoGlobalHook(window)
 //   window.$RefreshReg$ = () => {}
