@@ -123,7 +123,7 @@ function ChangeForm(props: IChangeProps) {
       <div className="m-4 h-75 col-12">
         <RateChart
           options={chartOptions}
-          style={{ width: '500px', height: '250px' }}
+          style={{ width: '90%', height: '250px' }}
         />
       </div>
       <div className="mt-4 ms-4 h-20">

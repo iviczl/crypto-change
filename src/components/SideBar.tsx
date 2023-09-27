@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import store, { AppStoreState } from '../stores/store'
 import { Currency } from '../types/currency'
 import { useSelector } from 'react-redux'
-import { getLastMinMaxRates, getLastRate } from '../services/rateServerHandler'
+import { getLastMinMaxRates } from '../services/rateServerHandler'
 
 function SideBar() {
   const currencyStore = store.getState().currency
@@ -13,23 +13,17 @@ function SideBar() {
     const lastMinMaxRates = getLastMinMaxRates(rates, currency, 60000)
     return (
       <li
-        className="list-group-item d-flex flex-row align-items-center"
+        className="list-group-item d-flex flex-row align-items-center currency-item"
         key={currency.code}
       >
         <div className="fw-bold p-1">{currency.code}</div>
         <div>
-          <div>
-            <img
-              src="caret-down-fill.svg"
-              title="last minute minimum exchange rate value for the currency"
-            />
+          <div title="last minute minimum exchange rate value for the currency">
+            <img src="caret-down-fill.svg" />
             {lastMinMaxRates?.min.exchangeValue}
           </div>
-          <div>
-            <img
-              src="caret-up-fill.svg"
-              title="last minute maximum exchange rate value for the currency"
-            />
+          <div title="last minute maximum exchange rate value for the currency">
+            <img src="caret-up-fill.svg" />
             {lastMinMaxRates?.max.exchangeValue}
           </div>
         </div>

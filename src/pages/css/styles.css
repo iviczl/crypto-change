@@ -1,5 +1,5 @@
 .page {
-  width: 700px;
+  max-width: 700px;
   margin-inline: auto;
 }
 .data-page {
@@ -29,4 +29,7 @@
 .disabled-color {
   filter: invert(72%) sepia(2%) saturate(3%) hue-rotate(326deg) brightness(95%)
     contrast(89%);
+}
+.currency-item {
+  cursor: default;
 }
