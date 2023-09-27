@@ -18,19 +18,34 @@ export default function Connection() {
   return (
     <div className="py-5 connection-page">
       <div className="mx-auto pt-2">
-        {isConnected ? (
-          <div>
-            <p>The application is connected to the rate server.</p>
-            <p>Now exchange rates will be refreshed in every minute.</p>
-          </div>
-        ) : (
-          <p>There is no server connection</p>
-        )}
-      </div>
-      <div className="mx-auto pt-2" style={{ width: '200px' }}>
-        <button className="btn btn-primary" onClick={toggleConnect}>
+        <div className="form-check form-switch">
+          <input
+            className="form-check-input"
+            type="checkbox"
+            role="switch"
+            id="flexSwitchCheckDefault"
+            checked={isConnected}
+            onChange={toggleConnect}
+          />
+          <label className="form-check-label" htmlFor="flexSwitchCheckDefault">
+            Connect to the exchange rate server
+          </label>
+        </div>
+        <div className="mx-auto pt-2">
+          {isConnected ? (
+            <div>
+              <p>
+                The application is connected to the exchange rate server. Now
+                exchange rates will be refreshed in every minute.
+              </p>
+            </div>
+          ) : (
+            <p>There is no server connection.</p>
+          )}
+        </div>
+        {/* <button className="btn btn-primary" onClick={toggleConnect}>
           {isConnected ? 'Close server connection' : 'Connect to server'}
-        </button>
+        </button> */}
       </div>
     </div>
   )
