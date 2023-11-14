@@ -3,11 +3,27 @@ import store, { AppStoreState } from '../stores/store'
 import { Currency } from '../types/currency'
 import { useSelector } from 'react-redux'
 import { getLastMinMaxRates } from '../services/rateServerHandler'
+import { Rate } from '../types/rate'
+import { useQuery } from '@tanstack/react-query'
+import { currencyDataQueryKey } from './CurrencyDataProvider'
+import { Loading } from './Loading'
+// import { useQuery } from '@tanstack/react-query'
+// import { currencyDataQueryKey } from './CurrencyDataProvider'
 
 function SideBar() {
   const currencyStore = store.getState().currency
   const [currencies] = useState(currencyStore.currencies)
-  const rates = useSelector((state: AppStoreState) => state.currency.rates)
+  const {
+    data: rates,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: currencyDataQueryKey,
+    staleTime: Infinity,
+    // cacheTime: Infinity,
+    initialData: new Array<Rate>(),
+  })
+  // const rates = useSelector((state: AppStoreState) => state.currency.rates)
 
   function currencyRate(currency: Currency) {
     const lastMinMaxRates = getLastMinMaxRates(rates, currency, 60000)
@@ -29,6 +45,10 @@ function SideBar() {
         </div>
       </li>
     )
+  }
+
+  if (isLoading) {
+    return <Loading />
   }
 
   return (

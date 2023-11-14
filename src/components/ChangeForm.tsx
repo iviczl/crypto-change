@@ -5,8 +5,12 @@ import { removeUserCurrency } from '../stores/userSlice'
 import RateChart from './RateChart'
 // import { EChartsOption } from "echarts"
 import { ECBasicOption } from 'echarts/types/dist/shared'
-import store from '../stores/store'
+// import store from '../stores/store'
 import { getLastRates } from '../services/rateServerHandler'
+import { useQuery } from '@tanstack/react-query'
+import { Rate } from '../types/rate'
+import { currencyDataQueryKey } from './CurrencyDataProvider'
+import { Loading } from './Loading'
 
 interface IChangeProps {
   sourceCurrency: Currency
@@ -19,6 +23,17 @@ function ChangeForm(props: IChangeProps) {
   const [sourceCurrencyAmount, setSourceCurrencyAmount] = useState(0)
   const [targetCurrencyAmount, setTargetCurrencyAmount] = useState(0)
   const dispatch = useAppDispatch()
+
+  const {
+    data: rates,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: currencyDataQueryKey,
+    staleTime: Infinity,
+    // cacheTime: Infinity,
+    initialData: new Array<Rate>(),
+  })
 
   const [chartOptions, setChartOptions] = useState({
     title: {
@@ -44,7 +59,8 @@ function ChangeForm(props: IChangeProps) {
     setTargetCurrencyAmount(sourceCurrencyAmount * props.rate)
     const now = Date.now()
     const chartData = getLastRates(
-      store.getState().currency.rates,
+      // store.getState().currency.rates,
+      rates,
       props.targetCurrency,
       now - 60000 * 60 * 24 * 7,
       now
@@ -70,6 +86,10 @@ function ChangeForm(props: IChangeProps) {
 
   const deleteCurrency = async () => {
     await dispatch(removeUserCurrency(props.targetCurrency.code))
+  }
+
+  if (isLoading) {
+    return <Loading />
   }
 
   return (

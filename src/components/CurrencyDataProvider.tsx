@@ -2,6 +2,17 @@ import { ReactNode, createContext, useCallback, useEffect } from 'react'
 import useWebSocket, { ReadyState } from 'react-use-websocket'
 import { useQueryClient } from '@tanstack/react-query'
 import config from '../assets/config.json'
+import {
+  ExrateMessage,
+  HelloMessage,
+  InMessage,
+  OhlcvMessage,
+  OutMessage,
+  SymbolIdPattern,
+  getCurrencyCode,
+} from '../types/message'
+import { Rate } from '../types/rate'
+import { currencies } from '../services/currency'
 
 // a context for currency data
 export const CurrencyDataContext = createContext(
@@ -10,26 +21,39 @@ export const CurrencyDataContext = createContext(
     sendMessage: (content: any) => void
   } | null
 )
-const SOCKET_URL = config.api.ws.uri
-const MESSAGE_TYPE = {
-  ERROR: 'error',
-  INITIAL_DATA: 'INITIAL_DATA',
-  SEND_MESSAGE: 'SEND_MESSAGE',
-  NEW_MESSAGE: 'NEW_MESSAGE',
+const SocketUri = config.api.ws.uri
+const apiKey = config.api.key
+const MessageType = {
+  Error: 'error',
+  Hello: 'hello',
+  Reconnect: 'reconnect',
+  Exrate: 'exrate',
+  Ohlcv: 'ohlcv',
 }
-export const queryKey = ['currency-data']
+export const currencyDataQueryKey = ['currency-data']
 
 // the provider component to provide currency data context
 export const CurrencyDataProvider = ({ children }: { children: ReactNode }) => {
   const errorHandler = (errorEvent: Event) => {}
+  const openHandler = (openEvent: Event): void => {
+    const hello = {
+      ...HelloMessage,
+      apikey: apiKey,
+      subscribe_filter_asset_id: currencies.map((currency) => currency.code),
+    }
+    sM(JSON.stringify(hello))
+    console.log('hello sent:', hello)
+  }
+
   // initialize the WebSocket connection and retrieve necessary properties
   const {
     sendMessage: sM,
     lastMessage,
     readyState,
-  } = useWebSocket(SOCKET_URL, {
+  } = useWebSocket(SocketUri, {
     shouldReconnect: (closeEvent) => (closeEvent.reason === '' ? true : false),
     onError: errorHandler,
+    onOpen: openHandler,
   })
 
   const queryClient = useQueryClient()
@@ -38,21 +62,38 @@ export const CurrencyDataProvider = ({ children }: { children: ReactNode }) => {
   // handle the incoming WebSocket messages
   useEffect(() => {
     if (lastMessage && lastMessage.data) {
-      const { type, message } = JSON.parse(lastMessage.data)
+      const rawData = JSON.parse(lastMessage.data)
+      const { type } = rawData as InMessage
       // Update the local messages state based on the message type
       switch (type) {
-        case MESSAGE_TYPE.ERROR:
-          console.log(message)
+        case MessageType.Error:
+          console.log(rawData)
           break
-        case MESSAGE_TYPE.INITIAL_DATA:
-          queryClient.setQueryData(queryKey, () => {
-            return message
-          })
+        case MessageType.Ohlcv:
+          console.log('ohlcv')
+          const ohlcvMessage = rawData as OhlcvMessage
+          const currencyCode = getCurrencyCode(ohlcvMessage)
+          if (currencyCode) {
+            queryClient.setQueryData(
+              currencyDataQueryKey,
+              (oldData: Rate[]) => {
+                const rate: Rate = {
+                  currencyCode: currencyCode,
+                  exchangeValue: ohlcvMessage.price_close,
+                  time: new Date(ohlcvMessage.time_period_end).getTime(),
+                }
+                if (oldData) {
+                  return [...oldData, rate]
+                }
+                return [rate]
+              }
+            )
+          }
           break
-        case MESSAGE_TYPE.NEW_MESSAGE:
-          queryClient.setQueryData(queryKey, (oldData: any) => {
-            return [...oldData, message]
-          })
+        case MessageType.Reconnect:
+          // queryClient.setQueryData(currencyDataQueryKey, (oldData: any) => {
+          //   return [...oldData, message]
+          // })
           break
         default:
           break
@@ -62,12 +103,11 @@ export const CurrencyDataProvider = ({ children }: { children: ReactNode }) => {
 
   // sendMessage function to send messages through the WebSocket connection
   const sendMessage = useCallback(
-    (content: any) => {
+    (content: OutMessage) => {
       if (canSendMessages)
         sM(
           JSON.stringify({
-            type: MESSAGE_TYPE.SEND_MESSAGE,
-            content,
+            ...content,
           })
         )
     },

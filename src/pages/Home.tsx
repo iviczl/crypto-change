@@ -8,10 +8,26 @@ import { useSelector } from 'react-redux'
 import store from '../stores/store'
 import SideBar from '../components/SideBar'
 import { getLastRate } from '../services/rateServerHandler'
+import { useQuery } from '@tanstack/react-query'
+import { currencyDataQueryKey } from '../components/CurrencyDataProvider'
+import { Loading } from '../components/Loading'
+import { Rate } from '../types/rate'
 
 function Home() {
+  const {
+    data: rates,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: currencyDataQueryKey,
+    // queryFn: () => {},
+    staleTime: Infinity,
+    // cacheTime: Infinity,
+    initialData: new Array<Rate>(),
+  })
+
+  // const rates = useSelector((state: AppStoreState) => state.currency.rates)
   const user = useSelector((state: AppStoreState) => state.user.user)
-  const rates = useSelector((state: AppStoreState) => state.currency.rates)
   const allCurrencies = store.getState().currency.currencies
   const currentTabStates = () => {
     const tabs = [] as ITab[]
@@ -63,6 +79,10 @@ function Home() {
     )
   }
 
+  if (isLoading) {
+    return <Loading />
+  }
+
   const tabContent = (tab: ITab) => {
     if (tab.id === '+') {
       return <NewChange currencies={availableCurrencies()} />
@@ -83,7 +103,7 @@ function Home() {
   return (
     <div className="d-flex data-page m-0">
       <SideBar />
-      <div className="ms-1">
+      <div className="ms-1 w-100">
         <ul className="nav nav-tabs" id="myTab" role="tablist">
           {tabStates.map((tab) => {
             return (

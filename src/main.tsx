@@ -6,6 +6,7 @@ import { Provider } from 'react-redux'
 import store from './stores/store'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { CurrencyDataProvider } from './components/CurrencyDataProvider'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
 const queryClient = new QueryClient()
 
@@ -17,6 +18,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
           <Provider store={store}>
             <App />
           </Provider>
+          <ReactQueryDevtools />
         </CurrencyDataProvider>
       </QueryClientProvider>
     </BrowserRouter>

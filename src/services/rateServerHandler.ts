@@ -22,11 +22,10 @@ export function rateServerConnectToggle(
 
 export async function connectRateServer() {
   /// TODO create code for a real server connection
-
-  dispatch(rateRefresh(refreshRates()))
-  intervalId = setInterval(() => {
-    dispatch(rateRefresh(refreshRates()))
-  }, 60000)
+  // dispatch(rateRefresh(refreshRates()))
+  // intervalId = setInterval(() => {
+  //   dispatch(rateRefresh(refreshRates()))
+  // }, 60000)
 }
 
 function refreshRates() {
