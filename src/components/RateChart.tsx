@@ -57,11 +57,11 @@ export default function RateChart({
       bottom: '3%',
       containLabel: true,
     },
-    toolbox: {
-      feature: {
-        saveAsImage: {},
-      },
-    },
+    // toolbox: {
+    //   feature: {
+    //     saveAsImage: {},
+    //   },
+    // },
     xAxis: {
       type: 'category',
       boundaryGap: false,
@@ -86,7 +86,7 @@ export default function RateChart({
   useEffect(() => {
     echarts.use([
       TitleComponent,
-      ToolboxComponent,
+      // ToolboxComponent,
       TooltipComponent,
       GridComponent,
       LegendComponent,
@@ -99,6 +99,8 @@ export default function RateChart({
     options && myChart.setOption({ ...defaultOptions, ...options }, true)
     // setChart(myChart)
     if (resizeObserver) resizeObserver.observe(chartRef.current as Element)
+
+    return () => myChart.dispose()
   }, [options])
 
   // useEffect(() => {
@@ -114,11 +116,11 @@ export default function RateChart({
   // }, [chart, loading]);
   const newStyle: CSSProperties = {
     height: 350,
-    width: 600,
+    width: '100%',
     ...style,
   }
   return (
-    <div className="echarts-parent position-relative">
+    <div className="echarts-parent position-relative d-flex p-0">
       <div ref={chartRef} style={newStyle}></div>
     </div>
   )

@@ -15,14 +15,16 @@
 
 .side-bar {
   max-height: 100%;
-  overflow: hidden;
+  max-width: 30%;
+  /* overflow: hidden; */
+  flex-wrap: nowrap;
   /* scrollbar-width: none; */
 }
 .side-bar::-webkit-scrollbar {
   display: none;
 }
 .side-bar:hover {
-  overflow-y: scroll;
+  /* overflow-y: scroll; */
   /* scrollbar-width: auto; */
 }
 

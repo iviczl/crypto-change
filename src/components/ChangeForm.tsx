@@ -23,7 +23,6 @@ function ChangeForm(props: IChangeProps) {
   const [sourceCurrencyAmount, setSourceCurrencyAmount] = useState(0)
   const [targetCurrencyAmount, setTargetCurrencyAmount] = useState(0)
   const dispatch = useAppDispatch()
-
   const {
     data: rates,
     isLoading,
@@ -140,14 +139,17 @@ function ChangeForm(props: IChangeProps) {
           </button>
         </div>
       </dialog>
-      <div className="m-4 h-75 col-12">
+      <div className="m-4 h-75 col-12 p-0">
         <RateChart
           options={chartOptions}
-          style={{ width: '90%', height: '250px' }}
+          style={{
+            width: '100%',
+            height: '250px',
+          }}
         />
       </div>
-      <div className="mt-4 ms-4 h-20">
-        <label>
+      <div className="m-4 h-20 d-flex flex-row">
+        <label className="flex-shrink-1 d-flex flex-nowrap">
           <input
             className="form-control"
             style={{ display: 'inline', width: 'auto' }}
@@ -158,10 +160,12 @@ function ChangeForm(props: IChangeProps) {
             }}
             value={sourceCurrencyAmount}
           />
-          <span className="ms-2">{props.sourceCurrency.code}</span>
+          <span className="ms-2 d-flex align-items-center">
+            {props.sourceCurrency.code}
+          </span>
         </label>
-        <label className="mx-4">=</label>
-        <label>
+        <label className="mx-4 d-flex align-items-center">=</label>
+        <label className="flex-shrink-1 d-flex flex-nowrap">
           <input
             className="form-control"
             style={{ display: 'inline', width: 'auto' }}
@@ -172,7 +176,9 @@ function ChangeForm(props: IChangeProps) {
             }}
             value={targetCurrencyAmount}
           />
-          <span className="ms-2">{props.targetCurrency.code}</span>
+          <span className="ms-2 d-flex align-items-center">
+            {props.targetCurrency.code}
+          </span>
         </label>
       </div>
       <button

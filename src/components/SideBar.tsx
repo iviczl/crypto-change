@@ -27,18 +27,32 @@ function SideBar() {
 
   function currencyRate(currency: Currency) {
     const lastMinMaxRates = getLastMinMaxRates(rates, currency, 60000)
+
+    if (
+      lastMinMaxRates?.min.exchangeValue === Infinity ||
+      lastMinMaxRates?.max.exchangeValue === -Infinity
+    ) {
+      return null
+    }
+
     return (
       <li
-        className="list-group-item d-flex flex-row align-items-center currency-item"
+        className="list-group-item d-flex flex-row align-items-center p-0 currency-item"
         key={currency.code}
       >
-        <div className="fw-bold p-1">{currency.code}</div>
+        <div className="fw-bold p-1 align-items-center">{currency.code}</div>
         <div>
-          <div title="last minute minimum exchange rate value for the currency">
+          <div
+            className="d-flex flex-row"
+            title="last minute minimum exchange rate value for the currency"
+          >
             <img src="caret-down-fill.svg" />
             {lastMinMaxRates?.min.exchangeValue}
           </div>
-          <div title="last minute maximum exchange rate value for the currency">
+          <div
+            className="d-flex flex-row"
+            title="last minute maximum exchange rate value for the currency"
+          >
             <img src="caret-up-fill.svg" />
             {lastMinMaxRates?.max.exchangeValue}
           </div>
